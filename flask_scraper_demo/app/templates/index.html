@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+
+
+
+
+<div class="text-center">
+
+    <p class="textalert">
+    {% with messages = get_flashed_messages() %}
+       {% if messages %}
+          {% for message in messages %}
+             {{ message }}
+          {% endfor %}
+       {% endif %}
+    {% endwith %}
+    </p>
+
+    <div id="button-container" class="btn-group">
+
+              <form action = "{{ url_for('searchterms') }}" method = "POST"
+            style="width:100%"
+         enctype = "multipart/form-data">
+         <input type = "file" class="btn btn-light" name = "file" />
+         <input type = "submit" class="btn btn-dark" />
+      </form>
+
+
+
+    </div>
+</div>
+
+{% endblock %}
+

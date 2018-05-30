@@ -1,0 +1,26 @@
+body {
+    margin: 20px;
+}
+
+.centerthings {
+    display: block;
+    margin: auto;
+}
+
+
+.tableformat, tr.tableformat{
+    width:70%;
+    margin: 0px auto;
+    text-align: left !important;
+}
+
+.textalert {
+    color: red;
+    font-weight: bold;
+}
+
+.mybutton {
+    display:block;
+    margin:auto;
+}
+
