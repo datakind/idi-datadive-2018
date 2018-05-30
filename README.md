@@ -20,7 +20,7 @@ This tool will be comprised of numerous subtools that search specific DFI websit
 
 ## Scoping Resources
 
-**flask_scraper_demo (dir)**
+###flask_scraper_demo (dir
 This is a demo flask app, you may want to set up a virtualenv for this. 
 Either way you can install the requirements with 
 `pip install -r requirements.txt`
@@ -41,3 +41,8 @@ __________________________
 __________________________
 **Results Page**
 ![Results Page](img/p3.png)
+
+
+
+**Notes**
+Code for the scraper is in ifc_scraper.py. This demo does have a grouping function in the ifc_scraper.py code, so it removes obvious duplicates and returns a single row for a project but shows which search terms were associated with a given project. 
