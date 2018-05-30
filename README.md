@@ -35,7 +35,8 @@ This *proof of concept* app takes as input a csv file of search terms and search
 **Landing Page**
 ![Landing Page](img/p1.png)
 __________________________
-**Load Search Terms **
+
+**Load Search Terms**
 ![Search Terms Page](img/p2.png)
 __________________________
 **Results Page**
