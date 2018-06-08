@@ -46,3 +46,5 @@ __________________________
 
 **Notes**
 Code for the scraper is in ifc_scraper.py. This demo does have a grouping function in the ifc_scraper.py code, so it removes obvious duplicates and returns a single row for a project but shows which search terms were associated with a given project. 
+
+### 
