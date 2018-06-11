@@ -138,9 +138,7 @@ def randomized_sleep(duration):
     sleep(duration + duration * random.random())
 
 
-def execute_search(search_term):
-    print("#" * 30)
-    print('Searching for Term:', search_term)
+def scrape_IFC(search_term):
     ## Build the chrome windows
     driver = init_chrome_webdriver(headless=False, download_dir=None)
     sleep(2)  ## Wait for it
@@ -191,9 +189,12 @@ def execute_search(search_term):
             nextButton.click()
             sleep(2)
 
-    df = pd.DataFrame(results, columns=['Project Name', 'url'])
-    df['Search Term'] = search_term
+    df = pd.DataFrame(results, columns=['Project Name', 'URL'])
+
+    # TODO: extract project status
+    df['Status'] = None
+    df['DFI'] = 'IFC'
+
     driver.quit()
     print('Completed Search for', search_term, '\n')
     return df
-

@@ -1,7 +1,7 @@
 from flask import render_template, request, send_file, flash, session
 from app import app
 import pandas as pd
-from ifc_scraper import execute_search
+from execute_search import execute_search
 from tqdm import tqdm
 
 # export FLASK_APP=app/__init__.py;
@@ -43,8 +43,9 @@ def run_scraper():
         master_df = master_df.reset_index(drop=True)
 
     if len(master_df) > 0:
-        grpd_df = (master_df[['Project Name', 'url', 'Search Term']]
-                            .groupby(['Project Name', 'url'])
+        # De-dupe
+        grpd_df = (master_df.fillna('')  # to avoid losing records in the groupby
+                            .groupby(['Project Name', 'URL', 'Status', 'DFI'])
                             .agg(lambda z: tuple(z))
                             .reset_index()
                    )
@@ -52,7 +53,6 @@ def run_scraper():
 
         # Add Reference Columns
         grpd_df['Reviewed'] = None
-        grpd_df['DFI'] = 'IFC'
 
         # TODO: Add informative headers
 
