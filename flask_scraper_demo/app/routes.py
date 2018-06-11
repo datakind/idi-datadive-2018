@@ -57,7 +57,7 @@ def run_scraper():
 
         # Save
         # TODO: Give unique filename
-        master_df.to_csv('app/output_data/ifc_scrape.csv',index=False)
+        grpd_df.to_csv('app/output_data/ifc_scrape.csv',index=False)
 
         # TODO: optional: to_excel, with urls converted to live links
 
