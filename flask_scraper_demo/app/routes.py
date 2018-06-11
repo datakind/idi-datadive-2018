@@ -14,10 +14,12 @@ def index():
 
 @app.route('/searchterms', methods=['GET', 'POST'])
 def searchterms():
+    # TODO: optional: validate search_terms
+    # TODO: optional: offer selector for DFI site, default to 'all'
     if request.method == 'POST':
         f = request.files['file']
-        df = pd.read_csv(f,header=None)
-        df.columns=['Terms']
+        df = pd.read_csv(f, header=None)
+        df.columns = ['Terms']
         session['search_terms'] = [i.strip() for i in df.Terms]
         table_html = df.to_html(classes=['table','tableformat'])
         table_html = table_html.replace('style="text-align: right;"','')
@@ -40,15 +42,24 @@ def run_scraper():
         master_df = master_df.reset_index(drop=True)
 
     if len(master_df) > 0:
-        grpd_df = master_df[['Project Name', 'url', 'Search Term']].groupby(['Project Name', 'url']).agg(\
-            lambda z: tuple(z)).reset_index()
+        grpd_df = (master_df[['Project Name', 'url', 'Search Term']]
+                            .groupby(['Project Name', 'url'])
+                            .agg(lambda z: tuple(z))
+                            .reset_index()
+                   )
         grpd_df['Search Term'] = [','.join(i) for i in grpd_df['Search Term']]
 
         # Add Reference Columns
         grpd_df['Reviewed'] = None
         grpd_df['DFI'] = 'IFC'
+
+        # TODO: Add informative headers
+
         # Save
+        # TODO: Give unique filename
         master_df.to_csv('app/output_data/ifc_scrape.csv',index=False)
+
+        # TODO: optional: to_excel, with urls converted to live links
 
         # Prep HTML
         table_html = grpd_df.to_html(classes=['table','tableformat'])
