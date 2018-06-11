@@ -1,13 +1,10 @@
-from flask import render_template, redirect, url_for, request, send_file, flash
+from flask import render_template, redirect, url_for, request, send_file, flash, session
 from app import app
 import pandas as pd
 from ifc_scraper import execute_search
 from tqdm import tqdm
 
 # export FLASK_APP=app/__init__.py;
-
-## Don't like use of global not sure right way to do this
-data = None
 
 @app.route('/')
 @app.route('/index')
@@ -17,13 +14,11 @@ def index():
 
 @app.route('/searchterms', methods=['GET', 'POST'])
 def searchterms():
-    global data
     if request.method == 'POST':
         f = request.files['file']
         df = pd.read_csv(f,header=None)
         df.columns=['Terms']
-        search_terms = [i.strip() for i in df.Terms]
-        data=search_terms
+        session['search_terms'] = [i.strip() for i in df.Terms]
         table_html = df.to_html(classes=['table','tableformat'])
         table_html = table_html.replace('style="text-align: right;"','')
 
@@ -33,10 +28,9 @@ def searchterms():
 @app.route('/run', methods=['GET','POST'])
 def run_scraper():
     error = None
-    search_terms = data
     master_df = None
 
-    for idx, t in enumerate(tqdm(search_terms)):
+    for idx, t in enumerate(tqdm(session['search_terms'])):
         print(t)
         results = execute_search(t)
         if idx == 0:
