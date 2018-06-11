@@ -1,4 +1,3 @@
-import datetime
 import os
 import random
 from bs4 import BeautifulSoup
@@ -152,7 +151,7 @@ def execute_search(search_term):
     print('Initializing Website')
     sleep(3)  ## Wait for it
 
-    ## Esecute the Search
+    ## Execute the Search
     inputElement = driver.find_element_by_id("searchBox")
     inputElement.clear()  ## Clear it just in case
     inputElement.send_keys('"{}"'.format(search_term))
@@ -177,7 +176,7 @@ def execute_search(search_term):
         print('\nProcessing Page: %s' % current_page, '\n')
         for i in soup.find_all('div', {"class": "projects"}):
             try:
-                selected = i.find('a', {'class': 'search-head'});
+                selected = i.find('a', {'class': 'search-head'})
                 url = selected['href']
                 label = selected.text
 
