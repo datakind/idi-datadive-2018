@@ -1,9 +1,6 @@
-from __future__ import absolute_import, division, print_function, unicode_literals
 import datetime
-import logging
 import os
 import random
-import time
 from bs4 import BeautifulSoup
 import pandas as pd
 from time import sleep
@@ -139,7 +136,7 @@ def randomized_sleep(duration):
     """
     Sleep a randomized amount of time between ``duration`` and 2 * ``duration`` seconds.
     """
-    time.sleep(duration + duration * random.random())
+    sleep(duration + duration * random.random())
 
 
 def execute_search(search_term):
