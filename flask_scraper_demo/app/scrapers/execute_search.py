@@ -1,8 +1,10 @@
 import pandas as pd
 
-from ifc_scraper import scrape_IFC
+from app.scrapers.ifc_scraper import scrape_IFC
+from app.scrapers.worldbank_scraper import scrape_world_bank
 
 SCRAPERS = [(scrape_IFC, 'IFC'),
+            (scrape_world_bank, 'World Bank')
             # NOTE: add more here
             ]
 

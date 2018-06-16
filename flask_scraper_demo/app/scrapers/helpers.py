@@ -1,17 +1,14 @@
 import os
 import random
-from bs4 import BeautifulSoup
-import pandas as pd
-from time import sleep
 
 # import shapefile
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
-from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.remote.webdriver import WebDriver as RemoteWebDriver
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import Select, WebDriverWait
+
 
 DEFAULT_WINDOW_SIZE = (1366, 768)
 DEFAULT_LOG_PATH = os.path.devnull
@@ -136,65 +133,3 @@ def randomized_sleep(duration):
     Sleep a randomized amount of time between ``duration`` and 2 * ``duration`` seconds.
     """
     sleep(duration + duration * random.random())
-
-
-def scrape_IFC(search_term):
-    ## Build the chrome windows
-    driver = init_chrome_webdriver(headless=False, download_dir=None)
-    sleep(2)  ## Wait for it
-
-    ## Grab the Url
-    url = "https://disclosures.ifc.org/#/enterpriseSearchResultsHome/*"
-    driver.get(url)
-    print('Initializing Website')
-    sleep(3)  ## Wait for it
-
-    ## Execute the Search
-    inputElement = driver.find_element_by_id("searchBox")
-    inputElement.clear()  ## Clear it just in case
-    inputElement.send_keys('"{}"'.format(search_term))
-    inputElement.send_keys(Keys.ENTER)
-    print('searching for term')
-    sleep(3)
-
-    ## Now Collect the Links
-
-    soup = BeautifulSoup(driver.page_source)
-    current_page = 0
-    results = []
-    pagenum = soup.find(text=" Page")
-    total_pages = int([i for i in pagenum.parent.nextSiblingGenerator()][3].text)
-    print('Total Pages', total_pages)
-
-    print('Scraping Results')
-    while current_page + 1 <= total_pages:
-        current_page += 1
-        soup = BeautifulSoup(driver.page_source)
-
-        print('\nProcessing Page: %s' % current_page, '\n')
-        for i in soup.find_all('div', {"class": "projects"}):
-            try:
-                selected = i.find('a', {'class': 'search-head'})
-                url = selected['href']
-                label = selected.text
-
-                #                 print(label, url)
-                results.append([label, url])
-            except TypeError:
-                continue
-        if current_page < total_pages:
-            sleep(2)
-            nextButton = driver.find_element_by_class_name('next')
-            print(nextButton)
-            nextButton.click()
-            sleep(2)
-
-    df = pd.DataFrame(results, columns=['Project Name', 'URL'])
-
-    # TODO: extract project status
-    df['Status'] = None
-    df['DFI'] = 'IFC'
-
-    driver.quit()
-    print('Completed Search for', search_term, '\n')
-    return df
