@@ -1,8 +1,10 @@
-from flask import render_template, request, send_file, flash, session
-from app import app
 import pandas as pd
-from execute_search import execute_search
+from flask import render_template, request, send_file, flash, session
 from tqdm import tqdm
+
+from app import app
+from app.scrapers.execute_search import execute_search
+
 
 # export FLASK_APP=app/__init__.py;
 
