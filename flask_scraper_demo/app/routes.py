@@ -15,7 +15,7 @@ def index():
     return render_template('index.html', title='Home')
 
 
-@app.route('/search-terms', methods=['GET', 'POST'])
+@app.route('/search_terms', methods=['GET', 'POST'])
 def search_terms():
     # TODO: optional: validate search_terms
     # TODO: optional: offer selector for DFI site, default to 'all'
@@ -28,7 +28,7 @@ def search_terms():
         table_html = table_html.replace('style="text-align: right;"', '')
         form = SearchForm()
 
-        return render_template('searchterms.html', form=form, title='Search Terms', table=table_html)
+        return render_template('search_terms.html', form=form, title='Search Terms', table=table_html)
 
 
 @app.route('/run', methods=['GET', 'POST'])
@@ -36,7 +36,7 @@ def run_scraper():
     error = None
     master_df = None
 
-    for idx, term in enumerate(tqdm(session['search_terms'])):
+    for idx, term in enumerate(tqdm(session.get('search_terms'))):
         results = execute_search(term)
         if idx == 0:
             master_df = results
