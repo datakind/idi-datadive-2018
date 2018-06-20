@@ -1,5 +1,3 @@
-from time import sleep
-
 import pandas as pd
 import requests
 
@@ -15,9 +13,10 @@ class WorldBankScraper(object):
     URL_TEMPLATE = "http://search.worldbank.org/api/v2/projects?format=json&qterm={term}&source=IBRD&rows={results}&srt=score&order=desc&kw=N&os={start}"
 
     def __init__(self):
-        self.results = []
+        pass
 
     def scrape(self, search_term):
+        results = []
 
         formatted_term = self._format_search_term(search_term)
         url = self.URL_TEMPLATE.format(term=formatted_term, results=self.RESULTS_PER_PAGE, start=0)
@@ -30,17 +29,20 @@ class WorldBankScraper(object):
             current_page += 1
             print('\nProcessing Page: %s' % current_page, '\n')
             projects = self._get_projects_on_page(data)
-            self.results.extend(projects)
+            results.extend(projects)
             next_url = self.URL_TEMPLATE.format(term=formatted_term, results=self.RESULTS_PER_PAGE, start=self.RESULTS_PER_PAGE * current_page)
             data = requests.get(next_url).json()
-        df = self._build_dataframe()
+        df = self._build_dataframe(results)
         print('Completed Search for', search_term, '\n')
         return df
 
     def _get_total_pages(self, data):
         return (int(data['total']) / self.RESULTS_PER_PAGE) + 1
 
-    def _get_projects_on_page(self, data):
+    @staticmethod
+    def _get_projects_on_page(data):
+        """Build project data from the API JSON."""
+
         projects_on_page = []
         projects = data['projects']
         for project_id in projects.keys():
@@ -50,8 +52,8 @@ class WorldBankScraper(object):
             projects_on_page.append([project_name, url])
         return projects_on_page
 
-    def _build_dataframe(self):
-        df = pd.DataFrame(self.results, columns=['Project Name', 'URL'])
+    def _build_dataframe(self, results):
+        df = pd.DataFrame(results, columns=['Project Name', 'URL'])
         # TODO: extract project status
         df['Status'] = None
         df['DFI'] = self.DFI_NAME

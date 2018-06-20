@@ -7,32 +7,34 @@ from selenium.webdriver.common.keys import Keys
 from .helpers import init_chrome_webdriver
 
 
-def scrape_IFC(search_term):
+def scrape_ifc(search_term):
     return IFCScraper().scrape(search_term)
 
 
 class IFCScraper(object):
 
     DFI_NAME = 'IFC'
+    STARTING_URL = "https://disclosures.ifc.org/#/enterpriseSearchResultsHome/*"
 
     def __init__(self):
-        ## Build the chrome windows
+
+        # Build the chrome window
         self.driver = init_chrome_webdriver(headless=True, download_dir=None)
-        self.starting_url = "https://disclosures.ifc.org/#/enterpriseSearchResultsHome/*"
-        self.results = []
 
     def scrape(self, search_term):
+        results = []
+
         # Wait for it
         sleep(2)
 
-        ## Grab the Url
-        self.driver.get(self.starting_url)
+        # Grab the Url
+        self.driver.get(self.STARTING_URL)
         print('Initializing Website')
         sleep(3)  ## Wait for it
 
         self._search(search_term)
 
-        ## Now Collect the Links
+        # Now Collect the Links
 
         soup = BeautifulSoup(self.driver.page_source)
         current_page = 0
@@ -45,28 +47,35 @@ class IFCScraper(object):
 
             print('\nProcessing Page: %s' % current_page, '\n')
             projects_on_page = self._get_projects_on_page(soup)
-            self.results.extend(projects_on_page)
+            results.extend(projects_on_page)
             if current_page < total_pages:
                 self._click_next_button()
 
-        df = self._build_dataframe()
+        df = self._build_dataframe(results)
 
         self.driver.quit()
         print('Completed Search for', search_term, '\n')
         return df
 
+    def _build_dataframe(self, results):
+        df = pd.DataFrame(results, columns=['Project Name', 'URL'])
+        # TODO: extract project status
+        df['Status'] = None
+        df['DFI'] = self.DFI_NAME
+        return df
+
     def _search(self, search_term):
-        ## Execute the Search
+        # Execute the Search
         inputElement = self.driver.find_element_by_id("searchBox")
-        inputElement.clear()  ## Clear it just in case
+        inputElement.clear()  # Clear it just in case
         inputElement.send_keys('"{}"'.format(search_term))
         inputElement.send_keys(Keys.ENTER)
         print('searching for term')
         sleep(3)
 
     def _get_total_pages(self, soup):
-        pagenum = soup.find(text=" Page")
-        total_pages = int([i for i in pagenum.parent.nextSiblingGenerator()][3].text)
+        page_num = soup.find(text=" Page")
+        total_pages = int([i for i in page_num.parent.nextSiblingGenerator()][3].text)
         print('Total Pages', total_pages)
         return total_pages
 
@@ -84,14 +93,7 @@ class IFCScraper(object):
 
     def _click_next_button(self):
         sleep(2)
-        nextButton = self.driver.find_element_by_class_name('next')
-        print(nextButton)
-        nextButton.click()
+        next_button = self.driver.find_element_by_class_name('next')
+        print(next_button)
+        next_button.click()
         sleep(2)
-
-    def _build_dataframe(self):
-        df = pd.DataFrame(self.results, columns=['Project Name', 'URL'])
-        # TODO: extract project status
-        df['Status'] = None
-        df['DFI'] = self.DFI_NAME
-        return df
