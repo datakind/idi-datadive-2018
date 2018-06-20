@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 import pandas as pd
 from selenium.webdriver.common.keys import Keys
 
-from .helpers import init_chrome_webdriver
+from helpers import init_chrome_webdriver
 
 
 def scrape_ifc(search_term):

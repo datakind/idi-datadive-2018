@@ -6,11 +6,13 @@ Helper script to test an individual scraper.
 import pandas as pd
 
 # NOTE: replace with your scraper
+# from ifc_scraper import scrape_ifc
 from worldbank_scraper import scrape_world_bank
 
 
 DF_HEAD_LENGTH = 20  # number of records to print per dataframe
 SCRAPER = scrape_world_bank  # NOTE: replace with your scraper
+# SCRAPER = scrape_ifc
 TEST_SEARCH_TERMS = [  # NOTE: replace if these yield no results for your DFI
     'BNP Paribas',
     "NULL SHOULDN'T RETURN ANY ROWS qwertyuiop",

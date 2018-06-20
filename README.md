@@ -28,16 +28,14 @@ Most people will follow this route.
 
 1. Clone the repository (Click "Clone or download"; click the copy button; `git clone {copied text}`)
 2. Setup a [virtual environment](https://python-guide-cn.readthedocs.io/en/latest/dev/virtualenvs.html) (optional, but recommended): `mkvirtualenv idi-datadive-scoping`
-3. Navigate to `./flask_scraper_demo`
-4. `make setup` to install the requirements
-5. If you decide you need Selenium, you may need to install ChromeDriver.
-  * On Mac OS: `brew install chromedriver` then `export PATH=$PATH:/...`  # Please verify and update
-  * On Ubuntu: `sudo apt install chromium-chromedriver` then `export PATH=$PATH:/usr/lib/chromium-browser/`
+3. Navigate to `./scrapers`
+4. `pip install -r requirements.txt` to install the requirements
+5. If you decide you need Selenium, you may need to install ChromeDriver. Call out in Slack if you need help.
 6. Sign up for a scraper to work on, then use the following files in `scrapers` to get started on your own:
   * `miga_scraper.py` - blank template
   * `worldbank_scraper.py` - example of using requests and a data API
   * `ifc_scraper.py` - example of using Selenium and Beautiful Soup
-7. Once you're ready to test your work, navigate to `/app` and run `python test_scraper.py`
+7. Once you're ready to test your work, run `python test_scraper.py`
 8. Examine the outputs and the file, `test.csv`
 9. If everything looks good, submit it for checking and merging. Congrats!
 
@@ -50,9 +48,7 @@ This route is for anyone who wants to contribute to the Flask app, directly.
 3. Navigate to `./flask_scraper_demo`
 4. `make setup` to install the requirements
 5. `make run` to run the app
-5. You may need to install ChromeDriver.
-  * On Mac OS: `brew install chromedriver` then `export PATH=$PATH:/...`  # Please verify and update
-  * On Ubuntu: `sudo apt install chromium-chromedriver` then `export PATH=$PATH:/usr/lib/chromium-browser/`
+5. You may need to install ChromeDriver. Call out in Slack if you need help.
 6. Navigate to http://localhost:5000/ to make sure the app works
 7. On the app, choose the `Search_Terms.txt` file & click "Submit"
 8. It should show 2 search terms: click "Run Scraper"
