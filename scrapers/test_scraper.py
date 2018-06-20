@@ -6,7 +6,7 @@ Helper script to test an individual scraper.
 import pandas as pd
 
 # NOTE: replace with your scraper
-from scrapers.worldbank_scraper import scrape_world_bank
+from worldbank_scraper import scrape_world_bank
 
 
 DF_HEAD_LENGTH = 20  # number of records to print per dataframe
