@@ -20,8 +20,6 @@ This tool will be comprised of numerous subtools that search specific DFI websit
 
 ## Getting Started
 
-The demo Flask app & scrapers are found in `/flask_scraper_demo`.
-
 ### To start contributing to one of the scrapers
 
 Most people will follow this route.
@@ -35,13 +33,14 @@ Most people will follow this route.
   * `miga_scraper.py` - blank template
   * `worldbank_scraper.py` - example of using requests and a data API
   * `ifc_scraper.py` - example of using Selenium and Beautiful Soup
-7. Once you're ready to test your work, run `python test_scraper.py`
+7. Once you're ready to test your work, update `test_scraper.py` to point to your new work. Then run `python test_scraper.py`
 8. Examine the outputs and the file, `test.csv`
-9. If everything looks good, submit it for checking and merging. Congrats!
+9. If everything looks good, submit it for checking and merging. Congrats! Share any tips or tricks you used with the others on Slack.
 
 ### To test the full app
 
 This route is for anyone who wants to contribute to the Flask app, directly.
+The demo Flask app & scrapers are found in `/flask_scraper_demo`.
 
 1. Clone the repository (Click "Clone or download"; click the copy button; `git clone {copied text}`)
 2. Setup a [virtual environment](https://python-guide-cn.readthedocs.io/en/latest/dev/virtualenvs.html) (optional, but recommended): `mkvirtualenv idi-datadive-scoping`
@@ -66,10 +65,3 @@ __________________________
 __________________________
 **Results Page**
 ![Results Page](img/p3.png)
-
-
-
-**Notes**
-Code for the scraper is in ifc_scraper.py. This demo does have a grouping function in the ifc_scraper.py code, so it removes obvious duplicates and returns a single row for a project but shows which search terms were associated with a given project. 
-
-### 
