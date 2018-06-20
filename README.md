@@ -16,19 +16,22 @@ This tool will be comprised of numerous subtools that search specific DFI websit
 * Tool(s) are easy to execute and have straightforward instructions for use.
 * Tool(s) cover high priority DFI sites
 * All scrapers return data in an identical format - meaning the output has the same columns and meanings as all other scrapers. If some data is only available for a subset of DFIs then that column will be present but empty for the DFIs that do not have that information. 
-* Tool(s) deduplicate projects by specific DFI site, tool should not deduplicate across DFI sites. 
+* Tool(s) deduplicate projects by specific DFI site, tool should not deduplicate across DFI sites.
 
-## Scoping Resources
+## Getting Started
 
-###flask_scraper_demo (dir
-This is a demo flask app, you may want to set up a virtualenv for this. 
-Either way you can install the requirements with 
-`pip install -r requirements.txt`
+The demo Flask app & scrapers are found in `/flask_scraper_demo`.
 
-Then to run the app try:<br>
-`export FLASK_APP=scraper_demo.py`
-<br>then<br>
-`flask run`
+1. Clone the repository (Click "Clone or download"; click the copy button; `git clone {copied text}`)
+2. Setup a virtual environment: `mkvirtualenv idi-datadive-scoping`
+3. Navigate to `./flask_scraper_demo`
+4. `make setup` to install the requirements
+5. `make run` to run the app
+6. Navigate to http://localhost:5000/ to make sure the app works
+7. On the app, choose the `Search_Terms.txt` file & click "Submit"
+8. It should show 2 search terms: click "Run Scraper"
+9. Make sure the status of the scrapers is printed to your terminal
+10. Make sure the table displays on the web page at the end of the run
 
 This *proof of concept* app takes as input a csv file of search terms and searches the [IFC](https://disclosures.ifc.org/#/enterpriseSearchResultsHome/*) site. It only works for this site currently. If you want to run it there is a demo search terms file located at `flask_scraper_demo/Search_Terms.txt`. 
 
