@@ -9,7 +9,6 @@ Jinja2==2.10
 MarkupSafe==1.0
 numpy==1.14.3
 pandas==0.23.0
-pyspark==2.1.0+hadoop2.7
 python-dateutil==2.7.3
 pytz==2018.4
 requests==2.19.1
