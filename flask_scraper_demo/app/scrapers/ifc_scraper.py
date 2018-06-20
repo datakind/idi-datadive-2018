@@ -36,14 +36,14 @@ class IFCScraper(object):
 
         # Now Collect the Links
 
-        soup = BeautifulSoup(self.driver.page_source)
+        soup = BeautifulSoup(self.driver.page_source, 'html.parser')
         current_page = 0
         total_pages = self._get_total_pages(soup)
 
         print('Scraping Results')
         while current_page + 1 <= total_pages:
             current_page += 1
-            soup = BeautifulSoup(self.driver.page_source)
+            soup = BeautifulSoup(self.driver.page_source, 'html.parser')
 
             print('\nProcessing Page: %s' % current_page, '\n')
             projects_on_page = self._get_projects_on_page(soup)
