@@ -9,9 +9,10 @@
 
 <br>
 
-<form method="POST" action="{{ url_for('run_scraper') }}">
+<form id="run_form" method="POST" action="{{ url_for('run_scraper') }}">
     {{ form.csrf_token }}
-    {{ form.scrapers.label }} {{ form.scrapers(size=2) }}
+    {{ form.scrapers.label }}
+    <div>{{ form.scrapers(size=15) }}</div>
     <input type="submit" name="submit" value="Run Scraper" class="btn btn-dark mybutton"/>
 </form>
 

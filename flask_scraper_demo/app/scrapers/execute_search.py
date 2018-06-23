@@ -3,27 +3,30 @@ import pandas as pd
 from .ifc_scraper import scrape_ifc
 from .worldbank_scraper import scrape_world_bank
 
-SCRAPERS = [
-    (scrape_ifc, 'IFC'),
-    (scrape_world_bank, 'World Bank'),
+
+SELECT_ALL_NAME = 'All'
+
+SCRAPER_MAP = {
+    'IFC': scrape_ifc,
+    'World Bank': scrape_world_bank,
 
     # NOTE: Uncomment as these are implemented.
-    # (scrape_miga, 'MIGA'),
-    # (scrape_afdb, 'AfDB'),
-    # (scrape_eib, 'EIB'),
-    # (scrape_ebrd, 'EBRD'),
-    # (scrape_adb, 'ADB'),
-    # (scrape_aiib, 'AIIB'),
-    # (scrape_idb, 'IDB'),
-    # (scrape_opic, 'OPIC'),
-    # (scrape_fmo, 'FMO'),
-    # (scrape_cdc, 'CDC'),
-    # (scrape_bio, 'BIO'),
-    # (scrape_kfw, 'KfW')
-]
+    # 'MIGA': scrape_miga,
+    # 'AfDB': scrape_afdb,
+    # 'EIB': scrape_eib,
+    # 'EBRD': scrape_ebrd,
+    # 'ADB': scrape_adb,
+    # 'AIIB': scrape_aiib,
+    # 'IDB': scrape_idb,
+    # 'OPIC': scrape_opic,
+    # 'FMO': scrape_fmo,
+    # 'CDC': scrape_cdc,
+    # 'BIO': scrape_bio,
+    # 'KfW': scrape_kfw,
+}
 
 
-def execute_search(search_term):
+def execute_search(search_term, scraper_names):
     """
     iterate through scrapers and merge results.
     output columns: 'Project Name', 'URL', 'Status', 'DFI', 'Search Term'
@@ -32,8 +35,17 @@ def execute_search(search_term):
     print("#" * 30)
     print('Searching for Term:', search_term)
 
+    if SELECT_ALL_NAME in scraper_names:
+        scraper_names = SCRAPER_MAP.keys()
+
     # TODO: optional - run these asynchronously
-    for scraper, name in SCRAPERS:
+    for name in scraper_names:
+        scraper = SCRAPER_MAP.get(name)
+        if not scraper:
+            print(' - ERROR: scraper name {} not found'.format(name))
+            print('   ... skipping scraper')
+            continue
+
         print('Scraping:', name)
         df = df.append(scraper(search_term))
 
