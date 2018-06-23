@@ -5,20 +5,20 @@ from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
 
 def scrape_opic(search_term):
-    return OpicScraper(search_term).scrape(search_term)
+    return OpicScraper().scrape(search_term)
 
 class OpicScraper(object):
-
-    projectName = None
-    projectURL = None
-    projectStatus = None
-    NameList = []
-    urlList = []
 
     def __init__(self):
         pass
 
     def scrape(self, search_term):
+
+        projectName = None
+        projectURL = None
+        projectStatus = None
+        NameList = []
+        urlList = []
 
         browser = webdriver.Chrome("/usr/local/bin/chromedriver")
         url = "https://www3.opic.gov/OPICProjects"
@@ -34,8 +34,8 @@ class OpicScraper(object):
             if [td.get_attribute("href") for td in row.find_elements_by_xpath(".//td[5]/a")] == []:
                 projectURL = None
             else:
-                projectURL = [td.get_attribute("href") for td in row.find_elements_by_xpath(".//td[5]/a")][0]    
-            projectName = [td.text for td in row.find_elements_by_xpath(".//td[text()]")][-2]   
+                projectURL = [td.get_attribute("href") for td in row.find_elements_by_xpath(".//td[5]/a")][0]
+            projectName = [td.text for td in row.find_elements_by_xpath(".//td[text()]")][-2]
             NameList.append(projectName)
             urlList.append(projectURL)
 
@@ -53,11 +53,12 @@ class OpicScraper(object):
                         projectURL = None
                     else:
                         projectURL = [td.get_attribute("href") for td in row.find_elements_by_xpath(".//td[5]/a")][0]
-                    projectName = [td.text for td in row.find_elements_by_xpath(".//td[text()]")][-2]           
+                    projectName = [td.text for td in row.find_elements_by_xpath(".//td[text()]")][-2]
                     NameList.append(projectName)
                     urlList.append(projectURL)
             except NoSuchElementException:
                 break
+
 
         res = {'Project Name': NameList,
                'URL': urlList}
@@ -66,5 +67,3 @@ class OpicScraper(object):
         df['Status'] = 'Active'
         df = df[['Project Name', 'URL', 'Status', 'DFI']]
         return df
-
-
