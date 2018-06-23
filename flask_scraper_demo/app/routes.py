@@ -17,8 +17,6 @@ def index():
 
 @app.route('/search_terms', methods=['POST'])
 def search_terms():
-    # TODO: optional: validate search_terms
-    # TODO: optional: offer selector for DFI site, default to 'all'
     if request.method == 'POST':
         f = request.files['file']
 
