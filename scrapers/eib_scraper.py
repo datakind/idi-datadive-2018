@@ -37,17 +37,20 @@ class Eib():
         rdata = []
         for result in source.css('table.datatable tbody tr'):
             field = []
+            link = None
             for idx, col in enumerate(result.css('td')):
                 field_value = col.xpath('string()').extract_first()
                 field.append(field_value)
                 if idx == 0:
                     # Get the link from the first col
                     link = col.css('a').xpath('@href').extract_first()
+                    if link is not None:
+                        link = "http://www.eib.org" + link
                 break  # Only need the first one
 
             # Convert the list to a usable dict
             rdata.append({'Project Name': field[0],
-                          'URL': "http://www.eib.org" + link,
+                          'URL': link,
                           'Status': None,
                           'DFI': self.DFI_NAME
                           })
