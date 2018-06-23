@@ -1,5 +1,5 @@
 from parsel import Selector
-from .helpers import init_chrome_webdriver
+from helpers import init_chrome_webdriver
 import pandas as pd
 
 
@@ -29,7 +29,11 @@ class MigaScraper(object):
         df = self._extract_data(source)
         df['DFI'] = self.DFI_NAME
         print('Completed Search for', search_term, '\n')
-        return df
+        if df.shape[0] > 0:
+            df.columns = ['Project Name', 'URL', 'Status', 'DFI']
+            return df
+        else:
+            return pd.DataFrame(columns=['Project Name', 'URL', 'Status', 'DFI'])
 
     def _extract_data(self, source):
         data = []
@@ -50,4 +54,3 @@ class MigaScraper(object):
             if len(item_data.keys()) > 1:
                 data.append(item_data)
         return pd.DataFrame(data)
-
