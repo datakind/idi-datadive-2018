@@ -32,6 +32,14 @@ def search_terms():
             terms.drop_duplicates(inplace=True)
             terms.reset_index(inplace=True, drop=True)
 
+        # flag words smaller than a certain length
+        min_word_length = 4
+        terms_too_small = terms[terms.str.len() < min_word_length]
+        if terms_too_small.size:
+            flash('{} term(s) have less than {} characters: {}'.format(
+                terms_too_small.size, min_word_length, [term for term in terms_too_small],
+            ))
+
         df = pd.DataFrame(terms)
         df.columns = ['Terms']
         table_html = df.to_html(classes=['table', 'tableformat'])
