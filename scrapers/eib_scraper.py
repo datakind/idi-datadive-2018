@@ -1,3 +1,4 @@
+import pandas as pd
 from parsel import Selector
 from helpers import init_chrome_webdriver
 from selenium.webdriver.common.keys import Keys
@@ -33,8 +34,14 @@ class Eib():
 
         return self._extract_data(source)
 
+    def _build_dataframe(self, results):
+        df = pd.DataFrame(results, columns=['Project Name', 'URL'])
+        df['Status'] = None
+        df['DFI'] = self.DFI_NAME
+        return df
+
     def _extract_data(self, source):
-        rdata = []
+        results = []
         for result in source.css('table.datatable tbody tr'):
             field = []
             link = None
@@ -49,9 +56,6 @@ class Eib():
                 break  # Only need the first one
 
             # Convert the list to a usable dict
-            rdata.append({'Project Name': field[0],
-                          'URL': link,
-                          'Status': None,
-                          'DFI': self.DFI_NAME
-                          })
-        return rdata
+            results.append([field[0], link])
+
+        return self._build_dataframe(results)
