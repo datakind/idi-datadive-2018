@@ -28,17 +28,35 @@ class FMOScraper(object):
         # Wait for it
         sleep(2)
 
-        debug_search = False
+        '''
+        We encountered troubles with the search using the chrome driver: The resulting html page 
+        (and soup object created for it) would only include a subset of the projects that should be
+        returned for a given search term. Embedding the search terms in the url and using
+        'requests.get()' yields html that, if passed to soup, gives the complete list. =
+
+        The boolean 'debug_search' switches between these two options to get the search results:
+
+        debug_search = False -> use driver based search (this should be the default, but returns only subset of search results)
+        debug_search = True -> use url based search
+        '''
+        debug_search = True
 
         if ( debug_search ):
             import requests
-            page = requests.get("https://www.fmo.nl/worldmap?search=standard+bank&region=&year=&projects=allProjects")
+
+            first_url = 'https://www.fmo.nl/worldmap?search='
+            search_term = 'Standard Bank'
+            end_url = '&region=&year=&projects=allProjects'
+            page_num = 1
+            page = '&page={}'.format(page_num)
+
+            clean_search_term = search_term.lower().strip().replace(' ','+')
+            clean_search_term
+
+            new_url = first_url + clean_search_term + end_url + page
+            page = requests.get(new_url)
 
             soup = BeautifulSoup(page.content, 'html.parser')
-
-            #       from IPython import embed
-            #       embed()
-
         else:
             # Grab the Url
             self.driver.get(self.STARTING_URL)
