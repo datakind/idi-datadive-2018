@@ -14,7 +14,8 @@ def scrape_fmo(search_term):
 class FMOScraper(object):
 
     DFI_NAME = 'FMO'
-    STARTING_URL = "https://disclosures.ifc.org/#/enterpriseSearchResultsHome/*"
+    #STARTING_URL = "https://disclosures.ifc.org/#/enterpriseSearchResultsHome/*"
+    STARTING_URL = "https://www.fmo.nl/worldmap/"
 
     def __init__(self):
 
@@ -35,14 +36,15 @@ class FMOScraper(object):
         self._search(search_term)
 
         # Now Collect the Links
-
         soup = BeautifulSoup(self.driver.page_source, 'html.parser')
+
         current_page = 0
         total_pages = self._get_total_pages(soup)
 
         print('Scraping Results')
         while current_page + 1 <= total_pages:
             current_page += 1
+
             soup = BeautifulSoup(self.driver.page_source, 'html.parser')
 
             print('\nProcessing Page: %s' % current_page, '\n')
@@ -66,7 +68,7 @@ class FMOScraper(object):
 
     def _search(self, search_term):
         # Execute the Search
-        inputElement = self.driver.find_element_by_id("searchBox")
+        inputElement = self.driver.find_element_by_id("f-search")
         inputElement.clear()  # Clear it just in case
         inputElement.send_keys('"{}"'.format(search_term))
         inputElement.send_keys(Keys.ENTER)
@@ -74,18 +76,24 @@ class FMOScraper(object):
         sleep(3)
 
     def _get_total_pages(self, soup):
-        page_num = soup.find(text=" Page")
-        total_pages = int([i for i in page_num.parent.nextSiblingGenerator()][3].text)
-        print('Total Pages', total_pages)
-        return total_pages
+        #page_num = soup.find(text=" Page")
+        #total_pages = int([i for i in page_num.parent.nextSiblingGenerator()][3].text)
+        #print('Total Pages', total_pages)
+        #return total_pages
+        return 1
 
     def _get_projects_on_page(self, soup):
         projects_on_page = []
-        for i in soup.find_all('div', {"class": "projects"}):
+
+        #for i in  soup.find_all('div', {"class": "projects"}):
+        print ("Items found: " , len(soup.find_all("li", {"class": "ProjectList__item"}) ) )
+
+        for i in soup.find_all("li", {"class": "ProjectList__item"}):
             try:
-                selected = i.find('a', {'class': 'search-head'})
-                url = selected['href']
-                label = selected.text
+                selected = i
+                url = selected.a.get('href') #['href']
+                label = selected.h3.text
+                print("LABEL:", label)
                 projects_on_page.append([label, url])
             except TypeError:
                 continue
