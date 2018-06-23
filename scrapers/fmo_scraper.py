@@ -60,9 +60,7 @@ class FMOScraper(object):
         return df
 
     def _build_dataframe(self, results):
-        df = pd.DataFrame(results, columns=['Project Name', 'URL'])
-        # TODO: extract project status
-        df['Status'] = None
+        df = pd.DataFrame(results, columns=['Project Name', 'URL', 'Status'])
         df['DFI'] = self.DFI_NAME
         return df
 
@@ -85,16 +83,47 @@ class FMOScraper(object):
     def _get_projects_on_page(self, soup):
         projects_on_page = []
 
-        #for i in  soup.find_all('div', {"class": "projects"}):
-        print ("Items found: " , len(soup.find_all("li", {"class": "ProjectList__item"}) ) )
-
         for i in soup.find_all("li", {"class": "ProjectList__item"}):
             try:
                 selected = i
-                url = selected.a.get('href') #['href']
-                label = selected.h3.text
-                print("LABEL:", label)
-                projects_on_page.append([label, url])
+
+                if (selected.h3):
+                    label = selected.h3.text
+                else:
+                    continue
+
+                if (selected.a):
+                    url = selected.a.get('href')
+                else:
+                    continue
+
+                '''
+                Use default status = '' to indicate problems with getting information from website if
+                below way to extract status does not work properly any more due to changes of website
+                '''
+                status = ""
+
+                '''
+                The FMO website shows 4 span entries for 'Approved' projects and an additional
+                5th span entry with 'Proposed investment' for prxsoposed investments.
+
+                The different spans are:
+                0 (title) : Total FMO financing
+                1 : date
+                2 : country
+                3: sector
+                4: proposed (only exists if proposed investment)
+                '''
+                spans = selected.span.find_all('span', recursive=False)
+
+                if ( len(spans) == 4 ):
+                    status = "Approved"
+
+                if ( len(spans) == 5 ):
+                    status = spans[4].text
+
+                # append project
+                projects_on_page.append([label, url, status])
             except TypeError:
                 continue
         return projects_on_page
