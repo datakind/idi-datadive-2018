@@ -2,6 +2,7 @@ import pandas as pd
 
 from .ifc_scraper import scrape_ifc
 from .worldbank_scraper import scrape_world_bank
+from .eib_scraper import scrape_eib
 
 SCRAPERS = [
     (scrape_ifc, 'IFC'),
@@ -10,7 +11,7 @@ SCRAPERS = [
     # NOTE: Uncomment as these are implemented.
     # (scrape_miga, 'MIGA'),
     # (scrape_afdb, 'AfDB'),
-    # (scrape_eib, 'EIB'),
+    (scrape_eib, 'EIB')
     # (scrape_ebrd, 'EBRD'),
     # (scrape_adb, 'ADB'),
     # (scrape_aiib, 'AIIB'),
