@@ -28,45 +28,15 @@ class FMOScraper(object):
         # Wait for it
         sleep(2)
 
-        '''
-        We encountered troubles with the search using the chrome driver: The resulting html page 
-        (and soup object created for it) would only include a subset of the projects that should be
-        returned for a given search term. Embedding the search terms in the url and using
-        'requests.get()' yields html that, if passed to soup, gives the complete list. =
+        # Grab the Url
+        self.driver.get(self.STARTING_URL)
+        print('Initializing Website')
+        sleep(3)  ## Wait for it
 
-        The boolean 'debug_search' switches between these two options to get the search results:
+        self._search(search_term)
 
-        debug_search = False -> use driver based search (this should be the default, but returns only subset of search results)
-        debug_search = True -> use url based search
-        '''
-        debug_search = True
-
-        if ( debug_search ):
-            import requests
-
-            first_url = 'https://www.fmo.nl/worldmap?search='
-            search_term = 'Standard Bank'
-            end_url = '&region=&year=&projects=allProjects'
-            page_num = 1
-            page = '&page={}'.format(page_num)
-
-            clean_search_term = search_term.lower().strip().replace(' ','+')
-            clean_search_term
-
-            new_url = first_url + clean_search_term + end_url + page
-            page = requests.get(new_url)
-
-            soup = BeautifulSoup(page.content, 'html.parser')
-        else:
-            # Grab the Url
-            self.driver.get(self.STARTING_URL)
-            print('Initializing Website')
-            sleep(3)  ## Wait for it
-
-            self._search(search_term)
-
-            # Now Collect the Links
-            soup = BeautifulSoup(self.driver.page_source, 'html.parser')
+        # Now Collect the Links
+        soup = BeautifulSoup(self.driver.page_source, 'html.parser')
 
         current_page = 0
         total_pages = self._get_total_pages(soup)
@@ -75,10 +45,7 @@ class FMOScraper(object):
         while current_page + 1 <= total_pages:
             current_page += 1
 
-            if ( debug_search ):
-                soup = BeautifulSoup(page.content, 'html.parser')
-            else:
-                soup = BeautifulSoup(self.driver.page_source, 'html.parser')
+            soup = BeautifulSoup(self.driver.page_source, 'html.parser')
 
             print('\nProcessing Page: %s' % current_page, '\n')
             projects_on_page = self._get_projects_on_page(soup)
