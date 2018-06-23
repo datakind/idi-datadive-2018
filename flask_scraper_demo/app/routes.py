@@ -15,7 +15,7 @@ def index():
     return render_template('index.html', title='Home')
 
 
-@app.route('/search_terms', methods=['GET', 'POST'])
+@app.route('/search_terms', methods=['POST'])
 def search_terms():
     # TODO: optional: validate search_terms
     # TODO: optional: offer selector for DFI site, default to 'all'
