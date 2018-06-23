@@ -36,6 +36,7 @@ class OpicScraper(object):
             else:
                 projectURL = [td.get_attribute("href") for td in row.find_elements_by_xpath(".//td[5]/a")][0]
             projectName = [td.text for td in row.find_elements_by_xpath(".//td[text()]")][-2]
+            projectName = projectName.split('\n')[0]
             NameList.append(projectName)
             urlList.append(projectURL)
 
@@ -54,6 +55,7 @@ class OpicScraper(object):
                     else:
                         projectURL = [td.get_attribute("href") for td in row.find_elements_by_xpath(".//td[5]/a")][0]
                     projectName = [td.text for td in row.find_elements_by_xpath(".//td[text()]")][-2]
+                    projectName = projectName.split('\n')[0]
                     NameList.append(projectName)
                     urlList.append(projectURL)
             except NoSuchElementException:
