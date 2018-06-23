@@ -21,12 +21,24 @@ def search_terms():
     # TODO: optional: offer selector for DFI site, default to 'all'
     if request.method == 'POST':
         f = request.files['file']
-        df = pd.read_csv(f, header=None)
+
+        # clean input, remove space paddings, drop duplicates
+        terms = pd.read_csv(f, header=None)[0].str.strip()
+        duplicated_terms = [term for term in terms[terms.duplicated()]]
+        if duplicated_terms:
+            flash('{} term(s) were dropped for being duplicates: {}'.format(
+                len(duplicated_terms), duplicated_terms
+            ))
+            terms.drop_duplicates(inplace=True)
+            terms.reset_index(inplace=True, drop=True)
+
+        df = pd.DataFrame(terms)
         df.columns = ['Terms']
-        session['search_terms'] = [i.strip() for i in df.Terms]
         table_html = df.to_html(classes=['table', 'tableformat'])
         table_html = table_html.replace('style="text-align: right;"', '')
         form = SearchForm()
+
+        session['search_terms'] = [term for term in df.Terms] # for reuse in next request
 
         return render_template(
             'search_terms.html',
