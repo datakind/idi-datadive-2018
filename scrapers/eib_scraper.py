@@ -45,7 +45,13 @@ class Eib():
         for result in source.css('table.datatable tbody tr'):
             field = []
             link = None
-            for idx, col in enumerate(result.css('td')):
+
+            total_tds = result.css('td')
+            if len(total_tds) == 1:
+                # No results were found
+                break
+
+            for idx, col in enumerate(total_tds):
                 field_value = col.xpath('string()').extract_first()
                 field.append(field_value)
                 if idx == 0:
