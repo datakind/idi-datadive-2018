@@ -5,7 +5,7 @@ from tqdm import tqdm
 from . import app
 
 from .forms import SearchForm
-from .scrapers.execute_search import execute_search
+from .scrapers.execute_search import execute_search, SELECT_ALL_NAME
 from .helpers import TableBuilder
 
 
@@ -28,16 +28,25 @@ def search_terms():
         table_html = table_html.replace('style="text-align: right;"', '')
         form = SearchForm()
 
-        return render_template('search_terms.html', form=form, title='Search Terms', table=table_html)
+        return render_template(
+            'search_terms.html',
+            form=form,
+            title='Search Terms',
+            table=table_html,
+        )
 
 
-@app.route('/run', methods=['GET', 'POST'])
+@app.route('/run', methods=['POST'])
 def run_scraper():
     error = None
     master_df = None
 
+    scraper_names = request.form.getlist('scrapers')
+    if not scraper_names:
+        scraper_names.append(SELECT_ALL_NAME)
+
     for idx, term in enumerate(tqdm(session.get('search_terms'))):
-        results = execute_search(term)
+        results = execute_search(term, scraper_names)
         if idx == 0:
             master_df = results
         else:
