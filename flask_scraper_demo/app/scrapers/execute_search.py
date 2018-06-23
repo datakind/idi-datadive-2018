@@ -68,8 +68,8 @@ def add_quotations_if_not_already(search_term):
     if not search_term:
         return '""'
 
-    return '{}{}{}'.format(
-        '"' if search_term[0] != '"' else '',
-        search_term,
-        '"' if search_term[-1] != '"' else '',
-    )
+    need_quotes = search_term[0] != '"'
+    if not need_quotes:
+        return search_term
+
+    return '{}{}{}'.format('"', search_term, '"')
