@@ -1,6 +1,6 @@
 import pandas as pd
 from parsel import Selector
-from helpers import init_chrome_webdriver
+from .helpers import init_chrome_webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import Select
 
