@@ -40,6 +40,8 @@ class OpicScraper(object):
             urlList.append(projectURL)
 
         while True:
+            if search_term == "":
+                break
             try:
                 browser.find_element_by_xpath('//*[@id="grid1_table_pager"]/div/div[3]/a')
                 browser.find_element_by_xpath('//*[@id="grid1_table_pager"]/div/div[3]').click()
