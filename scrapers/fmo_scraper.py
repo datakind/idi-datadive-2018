@@ -14,7 +14,6 @@ def scrape_fmo(search_term):
 class FMOScraper(object):
 
     DFI_NAME = 'FMO'
-    #STARTING_URL = "https://disclosures.ifc.org/#/enterpriseSearchResultsHome/*"
     STARTING_URL = "https://www.fmo.nl/worldmap/"
 
     def __init__(self):
@@ -37,7 +36,7 @@ class FMOScraper(object):
 
         # Now Collect the Links
         soup = BeautifulSoup(self.driver.page_source, 'html.parser')
-
+        print(self.driver.current_url)
         current_page = 0
         total_pages = self._get_total_pages(soup)
 
@@ -70,17 +69,23 @@ class FMOScraper(object):
         # Execute the Search
         inputElement = self.driver.find_element_by_id("f-search")
         inputElement.clear()  # Clear it just in case
-        inputElement.send_keys('"{}"'.format(search_term))
+        inputElement.send_keys('{}'.format(search_term))
         inputElement.send_keys(Keys.ENTER)
         print('searching for term')
         sleep(3)
 
     def _get_total_pages(self, soup):
-        #page_num = soup.find(text=" Page")
-        #total_pages = int([i for i in page_num.parent.nextSiblingGenerator()][3].text)
-        #print('Total Pages', total_pages)
-        #return total_pages
-        return 1
+        
+        # look for the 'next page' obj. if exists, click on it. if not, return 1 as total # of pages
+        pages = soup.find("ul", {"class": "pbuic-pager pgr-5-items"})
+        if pages is not None:
+            list_links = pages.find_all("li", {"class": ""})
+            results = [int(link.a.get_text()) for link in list_links]
+            total_pages = max(results)
+            return total_pages
+        else:
+            return 1
+
 
     def _get_projects_on_page(self, soup):
         projects_on_page = []
@@ -101,7 +106,9 @@ class FMOScraper(object):
 
     def _click_next_button(self):
         sleep(2)
-        next_button = self.driver.find_element_by_class_name('next')
+        next_button = self.driver.find_element_by_class_name('pgr-next')
         print(next_button)
+        
         next_button.click()
         sleep(2)
+        
