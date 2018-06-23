@@ -3,6 +3,7 @@ import pandas as pd
 from .ifc_scraper import scrape_ifc
 from .worldbank_scraper import scrape_world_bank
 from .adb_scraper import adb_scraper
+from .afdb_scraper import scrape_afdb
 
 
 SELECT_ALL_NAME = 'All'
@@ -13,10 +14,10 @@ SCRAPER_MAP = {
 
     # NOTE: Uncomment as these are implemented.
     # 'MIGA': scrape_miga,
-    # 'AfDB': scrape_afdb,
     # 'EIB': scrape_eib,
     # 'EBRD': scrape_ebrd,
-    'ADB': adb_scraper,
+    'Asian Development Bank': adb_scraper,
+    'African Development Bank': scrape_afdb,
     # 'AIIB': scrape_aiib,
     # 'IDB': scrape_idb,
     # 'OPIC': scrape_opic,
