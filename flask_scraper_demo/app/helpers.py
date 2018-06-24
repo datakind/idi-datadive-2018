@@ -17,7 +17,12 @@ class TableBuilder(object):
         filepath = path / Path(filename)
 
         writer = pd.ExcelWriter(filepath)
-        self.grpd_df.to_excel(writer, sheet_name='Results', index=False)
+
+        data_df = self.grpd_df.copy(deep=True)
+        data_df['URL'] = data_df.URL.apply(
+            lambda x: '=HYPERLINK("{url}", "{url}")'.format(url=x)
+        )
+        data_df.to_excel(writer, sheet_name='Results', index=False)
 
         DFI_df = pd.DataFrame([name for name in self.scraper_names])
         DFI_df.columns = ['DFI']
@@ -26,8 +31,6 @@ class TableBuilder(object):
         search_terms_df = pd.DataFrame([term for term in self.search_terms])
         search_terms_df.columns = ['Search Terms']
         search_terms_df.to_excel(writer, sheet_name='Search Terms', index=False)
-
-
 
         writer.save()
 
