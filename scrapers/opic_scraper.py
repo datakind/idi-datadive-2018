@@ -3,6 +3,7 @@ import numpy as np
 import time
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.chrome.options import Options
 
 def scrape_opic(search_term):
     return OpicScraper().scrape(search_term)
@@ -20,7 +21,11 @@ class OpicScraper(object):
         NameList = []
         urlList = []
 
-        browser = webdriver.Chrome("/usr/local/bin/chromedriver")
+        options = Options()
+        options.add_argument('--headless')
+        options.add_argument("window-size=1200x600")
+
+        browser = webdriver.Chrome(options=options)
         url = "https://www3.opic.gov/OPICProjects"
         browser.get(url)
         time.sleep(1 + np.random.randint(2,4))
@@ -61,7 +66,6 @@ class OpicScraper(object):
             except NoSuchElementException:
                 break
 
-
         res = {'Project Name': NameList,
                'URL': urlList}
         df = pd.DataFrame.from_dict(res)
@@ -69,3 +73,5 @@ class OpicScraper(object):
         df['Status'] = 'Active'
         df = df[['Project Name', 'URL', 'Status', 'DFI']]
         return df
+
+        browser.quit()  
