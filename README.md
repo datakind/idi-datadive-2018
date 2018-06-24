@@ -1,11 +1,11 @@
 # idi-datadive-scoping
 
-IDI scoping repo - see  [Project Brief](https://docs.google.com/document/d/1sGneio4rzMvcZA9WSEO908Mce53GeSwuOvBeaRbV0rA/edit#heading=h.hs0b4pt5bzef) for more detailed information on background, goals, etc.
+IDI scoping repo - see  [Project Brief](https://docs.google.com/document/d/1sGneio4rzMvcZA9WSEO908Mce53GeSwuOvBeaRbV0rA/edit#heading=h.hs0b4pt5bzef) for more detailed information on background, goals, etc. 
 
 
 ## Proposed Methodology
-At the DataDive - data scientists will work to develop a simple scraper tool that take as an input “search terms” and provide the links to projects that resulted when those terms were searched.
-This tool will be comprised of numerous subtools that search specific DFI websites. At the DataDive we will prioritize the creation of scrapers based on IDI’s prioritization. Scrapers will be written in Python likely using some combination of Selenium, Beautifulsoup, requests, etc.
+At the DataDive - data scientists will work to develop a simple scraper tool that take as an input “search terms” and provide the links to projects that resulted when those terms were searched. 
+This tool will be comprised of numerous subtools that search specific DFI websites. At the DataDive we will prioritize the creation of scrapers based on IDI’s prioritization. Scrapers will be written in Python likely using some combination of Selenium, Beautifulsoup, requests, etc. 
 
 ## General Requirements
 * Tool(s) take a csv/excel list of search terms as input
@@ -15,7 +15,7 @@ This tool will be comprised of numerous subtools that search specific DFI websit
 * DFI Site scrape extracted from (what bank is being scraped)
 * Tool(s) are easy to execute and have straightforward instructions for use.
 * Tool(s) cover high priority DFI sites
-* All scrapers return data in an identical format - meaning the output has the same columns and meanings as all other scrapers. If some data is only available for a subset of DFIs then that column will be present but empty for the DFIs that do not have that information.
+* All scrapers return data in an identical format - meaning the output has the same columns and meanings as all other scrapers. If some data is only available for a subset of DFIs then that column will be present but empty for the DFIs that do not have that information. 
 * Tool(s) deduplicate projects by specific DFI site, tool should not deduplicate across DFI sites.
 
 ## Getting Started
@@ -63,29 +63,7 @@ The demo Flask app & scrapers are found in `/flask_scraper_demo`.
     * [`app/helpers.py`](https://github.com/datakind/idi-datadive-2018/blob/master/flask_scraper_demo/app/helpers.py) - This file has a TableBuilder class to help with displaying and exporting results.
     * [`app/scrapers/execute_search.py`](https://github.com/datakind/idi-datadive-2018/blob/master/flask_scraper_demo/app/scrapers/execute_search.py) - This file is responsible for calling all of the contributed scrapers and gathering results.
 
-This *proof of concept* app takes as input a csv file of search terms and searches the [IFC](https://disclosures.ifc.org/#/enterpriseSearchResultsHome/*) site. It only works for this site currently. If you want to run it there is a demo search terms file located at `flask_scraper_demo/Search_Terms.txt`.
-
-
-**Running in Docker**
-Run the flask app in docker
-
-1. Sign up for Docker: https://store.docker.com/signup
-2. Download Docker For Mac: https://store.docker.com/editions/community/docker-ce-desktop-mac
-3. Follow the installation instructions ([Docker Install Docs](https://docs.docker.com/install/))
-4. Open Docker (double-click the icon after it's installed)
-5. Open your Terminal
-6. Run the app (container): `docker run -d -p 5000:5000 jimjshields/idi:latest`
-7. Navigate to http://localhost:5000/
-
-**Making changes to the code**
-Pre-req: You have a Docker account, and Docker is installed and running (see above)
-
-1. If possible, merge the changes to the `master` branch of this repository (so we have them saved for the future)
-2. Build the docker container: `docker build -t {username}/idi:latest .`
-    * This will be uploaded to a docker hub account - similar to GitHub - so you will not need to build on every computer
-3. Try running the container to make sure it works: `docker run -d -p 5000:5000 idi:latest`
-4. Navigate to http://localhost:5000/ and make sure your changes are incorporated!
-
+This *proof of concept* app takes as input a csv file of search terms and searches the [IFC](https://disclosures.ifc.org/#/enterpriseSearchResultsHome/*) site. It only works for this site currently. If you want to run it there is a demo search terms file located at `flask_scraper_demo/Search_Terms.txt`. 
 
 **Landing Page**
 ![Landing Page](img/p1.png)
@@ -96,3 +74,15 @@ __________________________
 __________________________
 **Results Page**
 ![Results Page](img/p3.png)
+
+
+## Developer Notes 
+
+All scrapers are using a combination of python, pandas, requests, beautifulsoup and selenium. 
+Selenium is set to run headless, undetected in the background. 
+All scrapers were based off of the following templates: 
+    * `miga_scraper.py` - blank template
+    * `worldbank_scraper.py` - example of using requests and a data API
+    * `ifc_scraper.py` - example of using Selenium and Beautiful Soup
+
+
