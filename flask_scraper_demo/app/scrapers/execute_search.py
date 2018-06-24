@@ -8,6 +8,7 @@ from .eib_scraper import scrape_eib
 from .bio_scraper import scrape_bio
 from .fmo_scraper import scrape_fmo
 from .miga_scraper import scrape_miga
+from .ebrd_scraper import scrape_ebrd
 
 
 SELECT_ALL_NAME = 'All'
@@ -18,14 +19,14 @@ SCRAPER_MAP = {
 
     # NOTE: Uncomment as these are implemented.
     'MIGA': scrape_miga,
-     'EIB': scrape_eib,
-    # 'EBRD': scrape_ebrd,
+    'EIB': scrape_eib,
+    'EBRD': scrape_ebrd,
     'Asian Development Bank': adb_scraper,
     'African Development Bank': scrape_afdb,
     # 'AIIB': scrape_aiib,
     # 'IDB': scrape_idb,
     # 'OPIC': scrape_opic,
-     'FMO': scrape_fmo,
+    'FMO': scrape_fmo,
     # 'CDC': scrape_cdc,
     'BIO': scrape_bio,
     # 'KfW': scrape_kfw,
