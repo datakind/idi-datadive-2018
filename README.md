@@ -67,6 +67,7 @@ This *proof of concept* app takes as input a csv file of search terms and search
 
 
 **Running in Docker**
+
 Run the flask app in docker
 
 1. Download Docker
@@ -83,6 +84,7 @@ Run the flask app in docker
 
 
 **Making changes to the code**
+
 Pre-req: You have a Docker account, and Docker is installed and running (see above)
 
 1. If possible, merge the changes to the `master` branch of this repository (so we have them saved for the future)
