@@ -73,14 +73,14 @@ Run the flask app in docker
 2. Download Docker For Mac: https://store.docker.com/editions/community/docker-ce-desktop-mac
 3. Follow the installation instructions ([Docker Install Docs](https://docs.docker.com/install/))
 4. Open Docker (double-click the icon after it's installed)
-5. Run the container: `docker run -d -p 5000:5000 idi:latest`
+5. Run the app (container): `docker run -d -p 5000:5000 jimjshields/idi:latest`
 6. Navigate to http://localhost:5000/
 
 **Making changes to the code**
-Pre-req: Docker is installed and running (see above)
+Pre-req: You have a Docker account, and Docker is installed and running (see above)
 
 1. If possible, merge the changes to the `master` branch of this repository (so we have them saved for the future)
-2. Build the docker container: `docker build -t idi:latest .`
+2. Build the docker container: `docker build -t {username}/idi:latest .`
     * This will be uploaded to a docker hub account - similar to GitHub - so you will not need to build on every computer
 3. Try running the container to make sure it works: `docker run -d -p 5000:5000 idi:latest`
 4. Navigate to http://localhost:5000/ and make sure your changes are incorporated!
