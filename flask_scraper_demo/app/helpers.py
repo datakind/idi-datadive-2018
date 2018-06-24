@@ -1,3 +1,5 @@
+from datetime import datetime
+from pathlib import Path
 
 class TableBuilder(object):
     def __init__(self, master_df):
@@ -6,8 +8,11 @@ class TableBuilder(object):
 
     def save_df(self):
         # Save
-        # TODO: Give unique filename
-        self.grpd_df.to_csv('app/output_data/ifc_scrape.csv', index=False)
+        now = datetime.now().replace(microsecond=0).isoformat().replace(':', '-')
+        name = '{}_results.csv'.format(now)
+        path = Path('app') / Path('output_data')
+        filepath = path / Path(filename)
+        self.grpd_df.to_csv(filepath, index=False)
 
         # TODO: optional: to_excel, with urls converted to live links
 
