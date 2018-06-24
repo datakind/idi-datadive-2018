@@ -1,4 +1,3 @@
-import logging
 import pandas as pd
 from flask import render_template, request, send_file, flash, session
 from tqdm import tqdm
@@ -10,9 +9,7 @@ from .scrapers.execute_search import execute_search, SELECT_ALL_NAME
 from .helpers import TableBuilder
 
 
-logging.basicConfig(level=logging.INFO,
-                    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-logger = logging.getLogger(__name__)
+
 
 
 @app.route('/')
@@ -27,7 +24,7 @@ def search_terms():
         f = request.files['file']
 
         # clean input, remove space paddings, drop duplicates
-        terms = pd.read_csv(f, header=None)[0].str.strip()
+        terms = pd.read_excel(f, header=None)[0].str.strip()
         duplicated_terms = [term for term in terms[terms.duplicated()]]
         if duplicated_terms:
             flash('{} term(s) were dropped for being duplicates: {}'.format(
@@ -70,13 +67,7 @@ def run_scraper():
         scraper_names.append(SELECT_ALL_NAME)
 
     for idx, term in enumerate(tqdm(session.get('search_terms'))):
-        try:
-            results = execute_search(term, scraper_names)
-        except Exception as e:
-            logger.exception("The scraper {scraper_names} failed on the search {term}"
-                             .format(scraper_names=scraper_names, term=term))
-            failed_data = [['Error', 'Error', 'Error', scraper_names, term]]
-            results = pd.DataFrame(failed_data, columns=['Project Name', 'URL', 'Status', 'DFI', 'Search Term'])
+        results = execute_search(term, scraper_names)
 
         if idx == 0:
             master_df = results

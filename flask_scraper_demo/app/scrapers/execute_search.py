@@ -1,3 +1,4 @@
+import logging
 import pandas as pd
 
 from .ifc_scraper import scrape_ifc
@@ -11,6 +12,10 @@ from .miga_scraper import scrape_miga
 from .ebrd_scraper import scrape_ebrd
 from .opic_scraper import scrape_opic
 from .kfw_scraper import scrape_kfw
+
+logging.basicConfig(level=logging.INFO,
+                    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
 
 
 SELECT_ALL_NAME = 'All'
@@ -56,7 +61,14 @@ def execute_search(search_term, scraper_names):
             continue
 
         print('Scraping:', name)
-        df = df.append(scraper(search_term))
+        try:
+            df = df.append(scraper(search_term))
+        except Exception as e:
+            logger.exception("The scraper {name} failed on the search {term}"
+                             .format(name=name, term=search_term))
+            failed_data = [['', '', '', name, search_term, str(e)]]
+            results = pd.DataFrame(failed_data, columns=['Project Name', 'URL', 'Status', 'DFI', 'Search Term', 'Error'])
+            df = df.append(results)
 
     df['Search Term'] = search_term
     return df
