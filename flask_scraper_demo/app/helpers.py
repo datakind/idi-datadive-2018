@@ -9,6 +9,7 @@ class TableBuilder(object):
         self.search_terms = search_terms
         self.grpd_df = self._process_df()
         self.abs_filepath = self._make_absolute_filepath()
+        self.filename = self.abs_filepath.name
 
     def save_df(self):
         # Save
