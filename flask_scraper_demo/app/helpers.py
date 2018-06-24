@@ -3,9 +3,10 @@ from pathlib import Path
 import pandas as pd
 
 class TableBuilder(object):
-    def __init__(self, master_df, scraper_names):
+    def __init__(self, master_df, scraper_names, search_terms):
         self.master_df = master_df
         self.scraper_names = scraper_names
+        self.search_terms = search_terms
         self.grpd_df = self._process_df()
 
     def save_df(self):
@@ -16,15 +17,19 @@ class TableBuilder(object):
         filepath = path / Path(filename)
 
         writer = pd.ExcelWriter(filepath)
-        self.grpd_df.to_excel(writer, sheet_name='output', index=False)
+        self.grpd_df.to_excel(writer, sheet_name='Results', index=False)
 
-        input_df = pd.DataFrame([name for name in self.scraper_names])
-        input_df.columns = ['DFI']
-        input_df.to_excel(writer, sheet_name='input', index=False)
+        DFI_df = pd.DataFrame([name for name in self.scraper_names])
+        DFI_df.columns = ['DFI']
+        DFI_df.to_excel(writer, sheet_name='DFI', index=False)
+
+        search_terms_df = pd.DataFrame([term for term in self.search_terms])
+        search_terms_df.columns = ['Search Terms']
+        search_terms_df.to_excel(writer, sheet_name='Search Terms', index=False)
+
+
 
         writer.save()
-
-        # TODO: optional: to_excel, with urls converted to live links
 
     def get_table_html(self):
         # Prep HTML
