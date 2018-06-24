@@ -19,10 +19,7 @@ class AfricanDevelopmentBankScraper(object):
     def __init__(self):
 
         # Build the chrome window
-        try:
-            self.driver = init_chrome_webdriver(headless=True, download_dir=None)
-        except WebDriverException:
-            'Page did not load.'
+        self.driver = init_chrome_webdriver(headless=True, download_dir=None)
 
     def scrape(self, search_term):
 
@@ -120,7 +117,7 @@ class AfricanDevelopmentBankScraper(object):
 
                 projects_on_page.append([project_name,href_url,status])
         except:
-            'No search results.'
+            projects_on_page.append([])
 
         return projects_on_page
 

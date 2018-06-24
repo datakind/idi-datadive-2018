@@ -89,6 +89,9 @@ def init_chrome_webdriver(
     if disable_infobars is True:
         options.add_argument('--disable-infobars')
 
+    # Needed to run in docker
+    options.add_argument('--no-sandbox')
+
     # set window size, using a global default if not specified
     # (does this matter if `headless=True`?)
     if not window_size:

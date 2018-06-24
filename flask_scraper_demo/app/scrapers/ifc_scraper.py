@@ -17,7 +17,6 @@ class IFCScraper(object):
     STARTING_URL = "https://disclosures.ifc.org/#/enterpriseSearchResultsHome/*"
 
     def __init__(self):
-
         # Build the chrome window
         self.driver = init_chrome_webdriver(headless=True, download_dir=None)
 

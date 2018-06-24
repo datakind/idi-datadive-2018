@@ -49,13 +49,12 @@ class WorldBankScraper(object):
             project_data = projects[project_id]
             project_name = project_data['project_name']
             url = project_data['url']
-            projects_on_page.append([project_name, url])
+            status = project_data['status']
+            projects_on_page.append([project_name, url, status])
         return projects_on_page
 
     def _build_dataframe(self, results):
-        df = pd.DataFrame(results, columns=['Project Name', 'URL'])
-        # TODO: extract project status
-        df['Status'] = None
+        df = pd.DataFrame(results, columns=['Project Name', 'URL', 'Status'])
         df['DFI'] = self.DFI_NAME
         return df
 
