@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 import pandas as pd
 from selenium.webdriver.common.keys import Keys
 
-from helpers import init_chrome_webdriver
+from .helpers import init_chrome_webdriver
 
 def scrape_afdb(search_term):
     return AfricanDevelopmentBankScraper().scrape(search_term)
