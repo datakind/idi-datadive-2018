@@ -38,8 +38,13 @@ def execute_search(search_term, scraper_names):
     output columns: 'Project Name', 'URL', 'Status', 'DFI', 'Search Term'
     """
     df = pd.DataFrame([], columns=['Project Name', 'URL', 'Status', 'DFI'])
+    if not (search_term and scraper_names):
+        return df
+
+    search_term_quoted = add_quotations_if_not_already(search_term)
+
     print("#" * 30)
-    print('Searching for Term:', search_term)
+    print('Searching for Term:', search_term_quoted)
 
     if SELECT_ALL_NAME in scraper_names:
         scraper_names = SCRAPER_MAP.keys()
@@ -53,7 +58,18 @@ def execute_search(search_term, scraper_names):
             continue
 
         print('Scraping:', name)
-        df = df.append(scraper(search_term))
+        df = df.append(scraper(search_term_quoted))
 
     df['Search Term'] = search_term
     return df
+
+
+def add_quotations_if_not_already(search_term):
+    if not search_term:
+        return '""'
+
+    need_quotes = search_term[0] != '"'
+    if not need_quotes:
+        return search_term
+
+    return '{}{}{}'.format('"', search_term, '"')
