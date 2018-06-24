@@ -1,18 +1,28 @@
 from datetime import datetime
 from pathlib import Path
+import pandas as pd
 
 class TableBuilder(object):
-    def __init__(self, master_df):
+    def __init__(self, master_df, scraper_names):
         self.master_df = master_df
+        self.scraper_names = scraper_names
         self.grpd_df = self._process_df()
 
     def save_df(self):
         # Save
         now = datetime.now().replace(microsecond=0).isoformat().replace(':', '-')
-        name = '{}_results.csv'.format(now)
+        filename = '{}_results.xlsx'.format(now)
         path = Path('app') / Path('output_data')
         filepath = path / Path(filename)
-        self.grpd_df.to_csv(filepath, index=False)
+
+        writer = pd.ExcelWriter(filepath)
+        self.grpd_df.to_excel(writer, sheet_name='output', index=False)
+
+        input_df = pd.DataFrame([name for name in self.scraper_names])
+        input_df.columns = ['DFI']
+        input_df.to_excel(writer, sheet_name='input', index=False)
+
+        writer.save()
 
         # TODO: optional: to_excel, with urls converted to live links
 
@@ -33,5 +43,4 @@ class TableBuilder(object):
         # Add Reference Columns
         grpd_df['Reviewed'] = None
 
-        # TODO: Add informative headers
         return grpd_df
