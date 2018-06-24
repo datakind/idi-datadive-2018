@@ -8,15 +8,11 @@ class TableBuilder(object):
         self.scraper_names = scraper_names
         self.search_terms = search_terms
         self.grpd_df = self._process_df()
+        self.abs_filepath = self._make_absolute_filepath()
 
     def save_df(self):
         # Save
-        now = datetime.now().replace(microsecond=0).isoformat().replace(':', '-')
-        filename = '{}_results.xlsx'.format(now)
-        path = Path('app') / Path('output_data')
-        filepath = path / Path(filename)
-
-        writer = pd.ExcelWriter(filepath)
+        writer = pd.ExcelWriter(self.abs_filepath)
 
         data_df = self.grpd_df.copy(deep=True)
         data_df['URL'] = data_df.URL.apply(
@@ -52,3 +48,10 @@ class TableBuilder(object):
         grpd_df['Reviewed'] = None
 
         return grpd_df
+
+    def _make_absolute_filepath(self):
+        now = datetime.now().replace(microsecond=0).isoformat().replace(':', '-')
+        filename = '{}_results.xlsx'.format(now)
+        path = Path('app') / Path('output_data')
+        filepath = path / Path(filename)
+        return filepath.absolute()

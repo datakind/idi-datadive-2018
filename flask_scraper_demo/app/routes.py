@@ -1,4 +1,5 @@
 import pandas as pd
+from pathlib import Path
 from flask import render_template, request, send_file, flash, session
 from tqdm import tqdm
 
@@ -81,8 +82,9 @@ def run_scraper():
         table_builder = TableBuilder(master_df, scraper_names, search_terms)
         table_builder.save_df()
         table_html = table_builder.get_table_html()
-
-        return render_template('table.html', title='Ran', table=table_html)
+        abs_filepath = table_builder.abs_filepath
+        return render_template('table.html', title='Ran', table=table_html,
+                               abs_filepath=abs_filepath)
     else:
         flash('No Search Results Found')
         return render_template('index.html', error=error)
@@ -95,7 +97,10 @@ def table_page_actions():
         if 'Home' in request.form:
             return render_template('index.html', title='Home')
         elif 'Download' in request.form:
-            return send_file('output_data/ifc_scrape.csv', attachment_filename='ifc_scrape.csv', as_attachment=True)
+            abs_filepath = Path(request.form.get('abs_filepath'))
+            return send_file(str(abs_filepath),
+                             attachment_filename=abs_filepath.name,
+                             as_attachment=True)
         else:
             pass  # unknown
     else:
