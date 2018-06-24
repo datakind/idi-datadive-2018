@@ -5,6 +5,7 @@ from .worldbank_scraper import scrape_world_bank
 from .adb_scraper import adb_scraper
 from .afdb_scraper import scrape_afdb
 from .eib_scraper import scrape_eib
+from .bio_scraper import scrape_bio
 
 
 SELECT_ALL_NAME = 'All'
@@ -24,7 +25,7 @@ SCRAPER_MAP = {
     # 'OPIC': scrape_opic,
     # 'FMO': scrape_fmo,
     # 'CDC': scrape_cdc,
-    # 'BIO': scrape_bio,
+    'BIO': scrape_bio,
     # 'KfW': scrape_kfw,
 }
 
