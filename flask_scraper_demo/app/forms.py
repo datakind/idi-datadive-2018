@@ -1,4 +1,4 @@
-from flask_wtf import FlaskForm
+from wtforms import Form
 from wtforms import SelectMultipleField
 from wtforms.validators import DataRequired
 
@@ -8,5 +8,5 @@ SCRAPER_NAMES = [
     (name, name) for name in [SELECT_ALL_NAME] + sorted(SCRAPER_MAP.keys())
 ]
 
-class SearchForm(FlaskForm):
+class SearchForm(Form):
     scrapers = SelectMultipleField('Choose Sites', choices=SCRAPER_NAMES)
