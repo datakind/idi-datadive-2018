@@ -9,6 +9,7 @@ from .bio_scraper import scrape_bio
 from .fmo_scraper import scrape_fmo
 from .miga_scraper import scrape_miga
 from .ebrd_scraper import scrape_ebrd
+from .opic_scraper import scrape_opic
 
 
 SELECT_ALL_NAME = 'All'
@@ -25,7 +26,7 @@ SCRAPER_MAP = {
     'African Development Bank': scrape_afdb,
     # 'AIIB': scrape_aiib,
     # 'IDB': scrape_idb,
-    # 'OPIC': scrape_opic,
+    'OPIC': scrape_opic,
     'FMO': scrape_fmo,
     # 'CDC': scrape_cdc,
     'BIO': scrape_bio,
