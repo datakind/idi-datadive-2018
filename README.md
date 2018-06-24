@@ -69,23 +69,28 @@ This *proof of concept* app takes as input a csv file of search terms and search
 **Running in Docker**
 Run the flask app in docker
 
-1. Sign up for Docker: https://store.docker.com/signup
-2. Download Docker For Mac: https://store.docker.com/editions/community/docker-ce-desktop-mac
-3. Follow the installation instructions ([Docker Install Docs](https://docs.docker.com/install/))
-4. Open Docker (double-click the icon after it's installed)
-5. Open your Terminal
-6. Run the app (container): `docker run -d -p 5000:5000 jimjshields/idi:latest`
-7. Navigate to http://localhost:5000/
+1. Download Docker
+    * [Mac Download](https://download.docker.com/mac/stable/Docker.dmg)
+    * [Windows Download](https://download.docker.com/win/stable/Docker%20for%20Windows%20Installer.exe)
+    * [Other systems](https://www.docker.com/community-edition#/download) *(may need to create an account to get download links)*
+2. Follow the installation instructions ([Docker Install Docs](https://docs.docker.com/install/))
+3. Open Docker (double-click the icon after it's installed)
+4. Open your Terminal
+5. Run the app (container): `docker run -d -p 5000:5000 jimjshields/idi:latest`
+    * To get updates, first run `docker pull jimjshields/idi:latest`
+    * To stop the service, get the *CONTAINER ID* by running: `docker ps`. Then stop it with `docker kill the_id`
+6. Navigate to http://localhost:5000/
+
 
 **Making changes to the code**
 Pre-req: You have a Docker account, and Docker is installed and running (see above)
 
 1. If possible, merge the changes to the `master` branch of this repository (so we have them saved for the future)
 2. Build the docker container: `docker build -t {username}/idi:latest .`
-    * This will be uploaded to a docker hub account - similar to GitHub - so you will not need to build on every computer
-3. Try running the container to make sure it works: `docker run -d -p 5000:5000 idi:latest`
+3. Try running the container to make sure it works: `docker run -it -p 5000:5000 {username}/idi:latest` *(use `-it` here to be able to see the output of the flask app to debug)*
 4. Navigate to http://localhost:5000/ and make sure your changes are incorporated!
-
+5. Once you confirm that it works, push the container to you account: `docker push {username}/idi:latest`
+    * This will be uploaded to a docker hub account - similar to GitHub - so you will not need to build on every computer
 
 **Landing Page**
 ![Landing Page](img/p1.png)
