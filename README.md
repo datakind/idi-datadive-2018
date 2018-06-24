@@ -73,8 +73,9 @@ Run the flask app in docker
 2. Download Docker For Mac: https://store.docker.com/editions/community/docker-ce-desktop-mac
 3. Follow the installation instructions ([Docker Install Docs](https://docs.docker.com/install/))
 4. Open Docker (double-click the icon after it's installed)
-5. Run the app (container): `docker run -d -p 5000:5000 jimjshields/idi:latest`
-6. Navigate to http://localhost:5000/
+5. Open your Terminal
+6. Run the app (container): `docker run -d -p 5000:5000 jimjshields/idi:latest`
+7. Navigate to http://localhost:5000/
 
 **Making changes to the code**
 Pre-req: You have a Docker account, and Docker is installed and running (see above)
