@@ -77,7 +77,8 @@ def run_scraper():
         master_df = master_df.reset_index(drop=True)
 
     if len(master_df) > 0:
-        table_builder = TableBuilder(master_df, scraper_names)
+        search_terms = session.get('search_terms')
+        table_builder = TableBuilder(master_df, scraper_names, search_terms)
         table_builder.save_df()
         table_html = table_builder.get_table_html()
 
