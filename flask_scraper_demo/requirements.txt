@@ -7,6 +7,7 @@ itsdangerous==0.24
 Jinja2==2.10
 MarkupSafe==1.0
 numpy==1.14.3
+openpyxl==2.5.4
 pandas==0.23.0
 parsel==1.4.0
 python-dateutil==2.7.3
