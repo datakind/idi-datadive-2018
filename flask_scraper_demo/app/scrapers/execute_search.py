@@ -6,6 +6,7 @@ from .adb_scraper import adb_scraper
 from .afdb_scraper import scrape_afdb
 from .eib_scraper import scrape_eib
 from .bio_scraper import scrape_bio
+from .fmo_scraper import scrape_fmo
 
 
 SELECT_ALL_NAME = 'All'
@@ -23,7 +24,7 @@ SCRAPER_MAP = {
     # 'AIIB': scrape_aiib,
     # 'IDB': scrape_idb,
     # 'OPIC': scrape_opic,
-    # 'FMO': scrape_fmo,
+     'FMO': scrape_fmo,
     # 'CDC': scrape_cdc,
     'BIO': scrape_bio,
     # 'KfW': scrape_kfw,
