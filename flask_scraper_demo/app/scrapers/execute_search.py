@@ -10,6 +10,7 @@ from .fmo_scraper import scrape_fmo
 from .miga_scraper import scrape_miga
 from .ebrd_scraper import scrape_ebrd
 from .opic_scraper import scrape_opic
+from .kfw_scraper import scrape_kfw
 
 
 SELECT_ALL_NAME = 'All'
@@ -24,13 +25,13 @@ SCRAPER_MAP = {
     'EBRD': scrape_ebrd,
     'Asian Development Bank': adb_scraper,
     'African Development Bank': scrape_afdb,
-    # 'AIIB': scrape_aiib,
+    # 'AIIB': scrape_aiib,  # deprecated
     # 'IDB': scrape_idb,
     'OPIC': scrape_opic,
     'FMO': scrape_fmo,
-    # 'CDC': scrape_cdc,
+    # 'CDC': scrape_cdc,  # deprecated
     'BIO': scrape_bio,
-    # 'KfW': scrape_kfw,
+    'KfW': scrape_kfw,
 }
 
 
