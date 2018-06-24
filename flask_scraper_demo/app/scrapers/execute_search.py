@@ -6,6 +6,7 @@ from .adb_scraper import adb_scraper
 from .afdb_scraper import scrape_afdb
 from .eib_scraper import scrape_eib
 from .bio_scraper import scrape_bio
+from .miga_scraper import scrape_miga
 
 
 SELECT_ALL_NAME = 'All'
@@ -15,7 +16,7 @@ SCRAPER_MAP = {
     'World Bank': scrape_world_bank,
 
     # NOTE: Uncomment as these are implemented.
-    # 'MIGA': scrape_miga,
+    'MIGA': scrape_miga,
      'EIB': scrape_eib,
     # 'EBRD': scrape_ebrd,
     'Asian Development Bank': adb_scraper,
