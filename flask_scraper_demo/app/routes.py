@@ -82,9 +82,9 @@ def run_scraper():
         table_builder = TableBuilder(master_df, scraper_names, search_terms)
         table_builder.save_df()
         table_html = table_builder.get_table_html()
-        abs_filepath = table_builder.abs_filepath
+        filename = table_builder.filename
         return render_template('table.html', title='Ran', table=table_html,
-                               abs_filepath=abs_filepath)
+                               filename=filename)
     else:
         flash('No Search Results Found')
         return render_template('index.html', error=error)
@@ -97,9 +97,11 @@ def table_page_actions():
         if 'Home' in request.form:
             return render_template('index.html', title='Home')
         elif 'Download' in request.form:
-            abs_filepath = Path(request.form.get('abs_filepath'))
-            return send_file(str(abs_filepath),
-                             attachment_filename=abs_filepath.name,
+            filename = request.form.get('filename')
+            path = Path('app') / Path('output_data')
+            filepath = path / filename
+            return send_file(str(filepath.absolute()),
+                             attachment_filename=filename,
                              as_attachment=True)
         else:
             pass  # unknown
