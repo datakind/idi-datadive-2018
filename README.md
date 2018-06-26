@@ -103,3 +103,24 @@ __________________________
 __________________________
 **Results Page**
 ![Results Page](img/p3.png)
+
+
+## Developer Notes
+
+This section is for a developer who needs to dive into the codebase for the first time.
+Likely because one of the scrapers has failed.
+
+All scrapers are using a combination of pandas, requests, beautifulsoup and selenium.
+Selenium is set to run headless, undetected in the background.
+
+The `scrapers/` folder served as a test bed for development of individual scrapers.
+This folder can be safely ignored.
+
+The `flask_scraper_demo/` folder contains all the guts of interest.
+See above for instructions on installing and running the app.
+The main files of note are:
+    * `app/routes.py` - The backbone of the app. The most significant thing it does is call the next file.
+    * `app/scrapers/execute_search.py` - This file is responsible for sequentially calling all of the scrapers and concatenating the results into one DataFrame.
+    * `app/scrapers/[xyz]_scraper.py` - these are the scraper scripts for the individual DFIs. It is likely that one of these are what needs updating.
+    * `app/scrapers/helpers.py` - various common functions for the selenium scripts
+    * `app/helpers.py` - class to assist with pandas formatting.
