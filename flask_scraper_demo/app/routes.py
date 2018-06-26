@@ -27,7 +27,7 @@ def search_terms():
         f = request.files['file']
 
         # clean input, remove space paddings, drop duplicates
-        terms = pd.read_csv(f, header=None)[0].str.strip()
+        terms = pd.read_excel(f, header=None)[0].str.strip()
         duplicated_terms = [term for term in terms[terms.duplicated()]]
         if duplicated_terms:
             flash('{} term(s) were dropped for being duplicates: {}'.format(

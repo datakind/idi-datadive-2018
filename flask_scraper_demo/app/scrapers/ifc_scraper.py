@@ -5,6 +5,7 @@ import pandas as pd
 from selenium.webdriver.common.keys import Keys
 
 from .helpers import init_chrome_webdriver
+from parsel import Selector
 
 
 def scrape_ifc(search_term):
@@ -20,6 +21,8 @@ class IFCScraper(object):
 
         # Build the chrome window
         self.driver = init_chrome_webdriver(headless=True, download_dir=None)
+        # Use this second driver to load the project pages to get the staus
+        self.projectdriver = init_chrome_webdriver(headless=True, download_dir=None)
 
     def scrape(self, search_term):
         results = []
@@ -58,9 +61,7 @@ class IFCScraper(object):
         return df
 
     def _build_dataframe(self, results):
-        df = pd.DataFrame(results, columns=['Project Name', 'URL'])
-        # TODO: extract project status
-        df['Status'] = None
+        df = pd.DataFrame(results, columns=['Project Name', 'URL', 'Status'])
         df['DFI'] = self.DFI_NAME
         return df
 
@@ -86,7 +87,9 @@ class IFCScraper(object):
                 selected = i.find('a', {'class': 'search-head'})
                 url = selected['href']
                 label = selected.text
-                projects_on_page.append([label, url])
+                status = self._parse_project_page(url)
+                print(url, label, status)
+                projects_on_page.append([label, url, status])
             except TypeError:
                 continue
         return projects_on_page
@@ -97,3 +100,15 @@ class IFCScraper(object):
         print(next_button)
         next_button.click()
         sleep(2)
+
+    def _parse_project_page(self, url):
+        if self.projectdriver.current_url == 'data:,':
+            # If its the first url this driver is hitting, hit it twice. Weird bug?
+            self.projectdriver.get(url)
+            sleep(2)
+
+        self.projectdriver.get(url)
+        sleep(4)  # Needs to be at least 4 sec for the data to be there
+        source = Selector(text=self.projectdriver.page_source)
+        status = source.css('div[ng-bind="projectData.Status"]').xpath("string()").extract_first()
+        return status
