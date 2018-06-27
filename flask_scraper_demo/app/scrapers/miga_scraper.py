@@ -53,4 +53,5 @@ class MigaScraper(object):
                     continue
             if len(item_data.keys()) > 1:
                 data.append(item_data)
-        return pd.DataFrame(data)
+        empty_df = pd.DataFrame(columns=['Project Name', 'URL', 'Status', 'DFI'])
+        return pd.concat([empty_df, pd.DataFrame(data)])
