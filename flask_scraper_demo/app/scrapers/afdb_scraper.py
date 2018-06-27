@@ -88,7 +88,7 @@ class AfricanDevelopmentBankScraper(object):
                     page_nums.append(page_num)
                 except:
                     'Not an integer.'
-            
+
             total_pages = max(page_nums)
             return total_pages
         except:
@@ -97,27 +97,27 @@ class AfricanDevelopmentBankScraper(object):
     def _get_projects_on_page(self, soup):
         projects_on_page = []
 
-        try:
-            table = soup.findChildren('table')[0]
-            rows = table.findChildren(['tr'])[1:]
+        table = soup.findChildren('table')
+        if table:
+            rows = table[0].findChildren(['tr'])[1:]
+        else:
+            return projects_on_page
 
-            for row in rows:
-                cols = row.findChildren('td')
-                
-                for col, val in enumerate(cols):
-                    if col == 0:
-                        pass
-                    elif col == 1:
-                        href_tag = val.findChildren('a',recursive=False)[0]
-                        project_name = href_tag.getText()
-                        href_url = self.BASE_URL + href_tag.get('href')
-                    elif col == 2:
-                        val.find('span').decompose()
-                        status = val.getText()
+        for row in rows:
+            cols = row.findChildren('td')
 
-                projects_on_page.append([project_name,href_url,status])
-        except:
-            projects_on_page.append([])
+            for col, val in enumerate(cols):
+                if col == 0:
+                    pass
+                elif col == 1:
+                    href_tag = val.findChildren('a',recursive=False)[0]
+                    project_name = href_tag.getText()
+                    href_url = self.BASE_URL + href_tag.get('href')
+                elif col == 2:
+                    val.find('span').decompose()
+                    status = val.getText()
+
+            projects_on_page.append([project_name,href_url,status])
 
         return projects_on_page
 
