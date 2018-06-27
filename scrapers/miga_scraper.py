@@ -30,7 +30,7 @@ class MigaScraper(object):
         df['DFI'] = self.DFI_NAME
         print('Completed Search for', search_term, '\n')
         if df.shape[0] > 0:
-            df.columns = ['Project Name', 'URL', 'Status', 'DFI']
+            df = df[['Project Name', 'URL', 'Status', 'DFI']]
             return df
         else:
             return pd.DataFrame(columns=['Project Name', 'URL', 'Status', 'DFI'])
@@ -53,4 +53,5 @@ class MigaScraper(object):
                     continue
             if len(item_data.keys()) > 1:
                 data.append(item_data)
-        return pd.DataFrame(data)
+        empty_df = pd.DataFrame(columns=['Project Name', 'URL', 'Status', 'DFI'])
+        return pd.concat([empty_df, pd.DataFrame(data)])
