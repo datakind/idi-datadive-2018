@@ -30,7 +30,6 @@ class MigaScraper(object):
         df['DFI'] = self.DFI_NAME
         print('Completed Search for', search_term, '\n')
         if df.shape[0] > 0:
-            df.columns = ['Project Name', 'URL', 'Status', 'DFI']
             df = df[['Project Name', 'URL', 'Status', 'DFI']]
             return df
         else:
