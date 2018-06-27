@@ -9,6 +9,8 @@ def adb_scraper(search_term):
 
     terms = search_term.replace(" ","+")
 
+    terms = "\"" + terms + "\""
+
     site = site + terms + "&page="
 
     data = pd.DataFrame(columns=['Project Name','URL','Status','DFI'])
