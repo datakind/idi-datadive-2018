@@ -67,7 +67,7 @@ class FMOScraper(object):
         # Execute the Search
         inputElement = self.driver.find_element_by_id("f-search")
         inputElement.clear()  # Clear it just in case
-        inputElement.send_keys('{}'.format(search_term))
+        inputElement.send_keys('"{}"'.format(search_term))
         inputElement.send_keys(Keys.ENTER)
         print('searching for term')
         sleep(3)
