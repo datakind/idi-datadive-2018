@@ -3,13 +3,13 @@ import json
 import requests
 import urllib.request
 
-def scrape_kfw(search_term):
-    return KfWScraper().scrape(search_term)
+def scrape_kfw_api(search_term):
+    return KFWAPIScraper().scrape(search_term)
 
 
-class KfWScraper(object):
+class KFWAPIScraper(object):
 
-    DFI_NAME = 'KfW'
+    DFI_NAME = 'KFW API'
 
     def __init__(self):
         pass

@@ -4,13 +4,13 @@ import pandas as pd
 from parsel import Selector
 
 
-def scrape_kfw(search_term):
-    return KfwScraper().scrape(search_term)
+def scrape_kfw_search(search_term):
+    return KFWSearchScraper().scrape(search_term)
 
 
-class KfwScraper(object):
+class KFWSearchScraper(object):
 
-    DFI_NAME = 'kfw'
+    DFI_NAME = 'KFW Search'
     URL_TEMPLATE = "https://www.kfw-entwicklungsbank.de/Internationale-Finanzierung/KfW-Entwicklungsbank/Projekte/Projektdatenbank/ipfz/do.haupia?query={term}&page=1&rows=100000&sortBy=relevance&sortOrder=desc&facet.filter.language=de&dymFailover=true"  # noqa
 
     def scrape(self, search_term):
