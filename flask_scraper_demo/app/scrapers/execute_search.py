@@ -11,7 +11,8 @@ from .fmo_scraper import scrape_fmo
 from .miga_scraper import scrape_miga
 from .ebrd_scraper import scrape_ebrd
 from .opic_scraper import scrape_opic
-from .kfw_scraper import scrape_kfw
+from .kfw_api_scraper import scrape_kfw_api
+from .kfw_search_scraper import scrape_kfw_search
 
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -36,7 +37,8 @@ SCRAPER_MAP = {
     'FMO': scrape_fmo,
     # 'CDC': scrape_cdc,  # deprecated
     'BIO': scrape_bio,
-    'KfW': scrape_kfw,
+    'KFW API': scrape_kfw_api,
+    'KFW Search': scrape_kfw_search,
 }
 
 
