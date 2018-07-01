@@ -7,7 +7,7 @@ from . import app
 
 from .forms import SearchForm
 from .scrapers.execute_search import execute_search, SELECT_ALL_NAME
-from .helpers import TableBuilder
+from .table_builder import TableBuilder
 
 
 
