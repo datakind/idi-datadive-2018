@@ -1,3 +1,4 @@
+from time import sleep
 from parsel import Selector
 from .helpers import init_chrome_webdriver
 import pandas as pd
@@ -18,6 +19,7 @@ class MigaScraper(object):
     def scrape(self, search_term):
         # starting url attempts to avoid pagination
         self.driver.get(self.STARTING_URL.format(search_term))
+        sleep(5)
         # need html to get iframe
         source = Selector(text=self.driver.page_source)
         # parse iframe
@@ -53,5 +55,4 @@ class MigaScraper(object):
                     continue
             if len(item_data.keys()) > 1:
                 data.append(item_data)
-        empty_df = pd.DataFrame(columns=['Project Name', 'URL', 'Status', 'DFI'])
-        return pd.concat([empty_df, pd.DataFrame(data)])
+        return pd.DataFrame.from_records(data, columns=['Project Name', 'URL', 'Status'])
