@@ -39,17 +39,19 @@ Selenium relies on ChromeDriver — a program that allows you to run Chrome in y
 **Navigating the code**
 
 In the root folder:
-    * `Dockerfile`: contains all of the commands to build the Docker image for this project.
-        * [More info on Dockerfiles.](https://docs.docker.com/engine/reference/builder/)
+
+* `Dockerfile`: contains all of the commands to build the Docker image for this project.
+    * [More info on Dockerfiles.](https://docs.docker.com/engine/reference/builder/)
 
 The `flask_scraper_demo/` folder contains all of the relevant code to run the app.
 
 The main files of note in the `flask_scraper_demo` folder are:
-    * `app/routes.py` - The backbone of the app. It contains all of the URLs the app can access, and the code that runs upon accessing the URLs. The most significant thing it does is call `execute_search` (below), which runs the scrapers given the search terms, when the `/run` URL is accessed.
-    * `app/scrapers/execute_search.py` - This file is responsible for sequentially calling all of the scrapers, concatenating the results into one DataFrame, and returning that DataFrame.
-    * `app/scrapers/[xyz]_scraper.py` - these are the scraper scripts for the individual DFIs. If something is broken, it's most likely one of these that needs to be updated.
-    * `app/scrapers/helpers.py` - various common functions for the Selenium scrapers.
-    * `app/table_builder.py` - class to assist with pandas formatting.
+
+* `app/routes.py` - The backbone of the app. It contains all of the URLs the app can access, and the code that runs upon accessing the URLs. The most significant thing it does is call `execute_search` (below), which runs the scrapers given the search terms, when the `/run` URL is accessed.
+* `app/scrapers/execute_search.py` - This file is responsible for sequentially calling all of the scrapers, concatenating the results into one DataFrame, and returning that DataFrame.
+* `app/scrapers/[xyz]_scraper.py` - these are the scraper scripts for the individual DFIs. If something is broken, it's most likely one of these that needs to be updated.
+* `app/scrapers/helpers.py` - various common functions for the Selenium scrapers.
+* `app/table_builder.py` - class to assist with pandas formatting.
 
 The `scrapers/` folder served as a test bed for development of individual scrapers.
 This folder can be safely ignored.
