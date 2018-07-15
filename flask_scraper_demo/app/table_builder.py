@@ -43,7 +43,7 @@ class TableBuilder(object):
                    .agg(lambda z: tuple(z))
                    .reset_index()
                    )
-        grpd_df['Search Term'] = [', '.join(i) for i in grpd_df['Search Term']]
+        grpd_df['Search Term'] = [', '.join(set(i)) for i in grpd_df['Search Term']]
 
         # Add Reference Columns
         grpd_df['Reviewed'] = None
