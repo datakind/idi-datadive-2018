@@ -41,7 +41,7 @@ class KFWAPIScraper(object):
                   + data[n_proj]['title'].replace(" ", "-")  \
                   + "-" + str(data[n_proj]['projnr']) + ".htm"
 
-        r = [data[n_proj]['title'], url, data[n_proj]['status'], "KfW"]
+        r = [data[n_proj]['title'], url, data[n_proj]['status'], self.DFI_NAME]
         return r
 
     def _build_dataframe(self, results):
