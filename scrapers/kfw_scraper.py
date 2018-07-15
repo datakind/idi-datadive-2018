@@ -1,49 +1,54 @@
-import pandas as pd
-import json
 import requests
-import urllib.request
+import urllib.parse
+import pandas as pd
+from parsel import Selector
+
 
 def scrape_kfw(search_term):
-    return KfWScraper().scrape(search_term)
+    return KfwScraper().scrape(search_term)
 
 
-class KfWScraper(object):
+class KfwScraper(object):
 
-    DFI_NAME = 'KfW'
-
-    def __init__(self):
-        pass
+    DFI_NAME = 'kfw'
+    URL_TEMPLATE = "https://www.kfw-entwicklungsbank.de/Internationale-Finanzierung/KfW-Entwicklungsbank/Projekte/Projektdatenbank/ipfz/do.haupia?query={term}&page=1&rows=100000&sortBy=relevance&sortOrder=desc&facet.filter.language=de&dymFailover=true"  # noqa
 
     def scrape(self, search_term):
-        res = []
+        results = []
 
-        # Loading all projects from JSON file
-        with urllib.request.urlopen('https://www.kfw-entwicklungsbank.de/ipfz/Projektdatenbank/download/json') as url:
-            data = json.loads(url.read().decode())
+        formatted_term = urllib.parse.quote_plus(search_term)
+        url = self.URL_TEMPLATE.format(term=formatted_term)
+        print('Scraping Results')
 
-        for n_proj in range(0, len(data)):
-            if data[n_proj].get('description'):
-                if search_term.lower().replace(" ", "") in data[n_proj]['title'].lower().replace(" ", ""):
-                    res.append(self._match_search_term(data, search_term, n_proj))
-            if data[n_proj].get('description'):
-                if search_term.lower().replace(" ", "") in data[n_proj]['description'].lower().replace(" ", ""):
-                    res.append(self._match_search_term(data, search_term, n_proj))
-            if data[n_proj].get('projekttraegers'):
-                if search_term.lower().replace(" ", "") in data[n_proj]['projekttraegers'][0].lower().replace(" ", ""):
-                    res.append(self._match_search_term(data, search_term, n_proj))
+        source = requests.get(url, verify=False).json()
+        results.extend(self._get_projects_on_page(source))
 
-        df = self._build_dataframe(res)
+        print('Completed Search for', search_term, '\n')
 
+        df = self._build_dataframe(results)
         return df
 
-    def _match_search_term(self, data, search_term, n_proj):
-        url = "https://www.kfw-entwicklungsbank.de/ipfz/Projektdatenbank/" \
-                  + data[n_proj]['title'].replace(" ", "-")  \
-                  + "-" + str(data[n_proj]['projnr']) + ".htm"
+    @staticmethod
+    def _get_projects_on_page(data):
+        """Build project data"""
 
-        r = [data[n_proj]['title'], url, data[n_proj]['status'], "KfW"]
-        return r
+        projects_on_page = []
+        projects = data.get('proxyDidYouMean', {}).get('response', {}).get('response', {}).get('docs', [])
+        if projects == []:
+            # Try a diferent key set
+            projects = data.get('response', {}).get('docs', [])
+
+        for project in projects:
+            project_name = project.get('title')[0]
+            link = project.get('link')
+            if link is not None:
+                link = 'https://www.kfw-entwicklungsbank.de/ipfz/Projektdatenbank' + link
+            projects_on_page.append([project_name, link])
+
+        return projects_on_page
 
     def _build_dataframe(self, results):
-        df = pd.DataFrame(results, columns=['Project Name', 'URL', "Status", "DFI"])
+        df = pd.DataFrame(results, columns=['Project Name', 'URL'])
+        df['Status'] = None
+        df['DFI'] = self.DFI_NAME
         return df
