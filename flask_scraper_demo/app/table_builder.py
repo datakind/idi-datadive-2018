@@ -13,7 +13,7 @@ class TableBuilder(object):
 
     def save_df(self):
         # Save
-        writer = pd.ExcelWriter(self.abs_filepath)
+        writer = pd.ExcelWriter(self.filename)
 
         data_df = self.grpd_df.copy(deep=True)
         data_df['URL'] = data_df.URL.apply(
