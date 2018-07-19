@@ -10,9 +10,6 @@ from .scrapers.execute_search import execute_search, SELECT_ALL_NAME
 from .table_builder import TableBuilder
 
 
-
-
-
 @app.route('/')
 @app.route('/index')
 def index():
@@ -23,9 +20,11 @@ def index():
 def search_terms():
     if request.method == 'POST':
         f = request.files['file']
-
+        
+        # Assume we only have an .xls or .xlsx file - this is set on the html form.
         # clean input, remove space paddings, drop duplicates
         terms = pd.read_excel(f, header=None)[0].str.strip()
+
         duplicated_terms = [term for term in terms[terms.duplicated()]]
         if duplicated_terms:
             flash('{} term(s) were dropped for being duplicates: {}'.format(
