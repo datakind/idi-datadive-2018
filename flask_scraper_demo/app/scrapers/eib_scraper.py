@@ -14,7 +14,7 @@ def scrape_eib(search_term):
 class Eib():
 
     DFI_NAME = 'EIB'
-    STARTING_URL = "http://www.eib.org/projects/loan/list/index.htm?from=2008&region=&sector=&to=2018&country"
+    STARTING_URL = "http://www.eib.org/projects/loan/list/index.htm?from=2008&region=&sector=&country"
 
     def __init__(self):
         self.driver = init_chrome_webdriver(headless=True, download_dir=None)
