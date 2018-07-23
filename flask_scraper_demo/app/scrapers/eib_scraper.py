@@ -1,8 +1,10 @@
+from time import sleep
 import pandas as pd
 from parsel import Selector
 from .helpers import init_chrome_webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import Select
+from selenium.common.exceptions import NoSuchElementException
 
 
 def scrape_eib(search_term):
@@ -22,7 +24,17 @@ class Eib():
 
         self.driver.get(self.STARTING_URL)
         # Search the term
-        inputElement = self.driver.find_element_by_css_selector("div.dataTables_filter input")
+        inputElement = None
+        wait = 1
+        while inputElement is None:
+            sleep(wait)
+            try:
+                inputElement = self.driver.find_element_by_css_selector("div.dataTables_filter input")
+            except NoSuchElementException as err:
+                wait *= 2
+                if wait > 33:  # wait up to 1 + 2 + 4 + 8 + 16 + 32 = 63 seconds
+                    raise
+
         inputElement.send_keys(self.search_term)
         inputElement.send_keys(Keys.ENTER)
 
