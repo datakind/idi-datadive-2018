@@ -9,11 +9,12 @@ class TableBuilder(object):
         self.search_terms = search_terms
         self.grpd_df = self._process_df()
         self.abs_filepath = self._make_absolute_filepath()
-        self.filename = str(self.abs_filepath.resolve())
+        self.filename = self.abs_filepath.name
 
     def save_df(self):
         # Save
-        writer = pd.ExcelWriter(self.filename)
+        filename = str(self.abs_filepath.relative_to(Path.cwd()))
+        writer = pd.ExcelWriter(filename)
 
         data_df = self.grpd_df.copy(deep=True)
         data_df['URL'] = data_df.URL.apply(
