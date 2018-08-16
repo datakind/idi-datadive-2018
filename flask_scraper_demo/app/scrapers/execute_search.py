@@ -26,7 +26,7 @@ SCRAPER_MAP = {
     'World Bank': scrape_world_bank,
 
     # NOTE: Uncomment as these are implemented.
-    'MIGA': scrape_miga,
+    # 'MIGA': scrape_miga,
     'EIB': scrape_eib,
     'EBRD': scrape_ebrd,
     'Asian Development Bank': adb_scraper,
