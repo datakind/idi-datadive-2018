@@ -42,6 +42,20 @@ SCRAPER_MAP = {
 }
 
 
+def try_scrape(search_term, scraper, name, df):
+    was_successful = None
+    try:
+        df = df.append(scraper(search_term))
+        was_successful = True
+    except Exception as e:
+        logger.exception("The scraper {name} failed on the search {term}"
+                         .format(name=name, term=search_term))
+        failed_data = [['', '', '', name, search_term, str(e)]]
+        results = pd.DataFrame(failed_data, columns=['Project Name', 'URL', 'Status', 'DFI', 'Search Term', 'Error'])
+        df = df.append(results)
+        was_successful = False
+    return df, was_successful
+
 def execute_search(search_term, scraper_names):
     """
     iterate through scrapers and merge results.
@@ -63,14 +77,23 @@ def execute_search(search_term, scraper_names):
             continue
 
         print('Scraping:', name)
-        try:
-            df = df.append(scraper(search_term))
-        except Exception as e:
-            logger.exception("The scraper {name} failed on the search {term}"
-                             .format(name=name, term=search_term))
-            failed_data = [['', '', '', name, search_term, str(e)]]
-            results = pd.DataFrame(failed_data, columns=['Project Name', 'URL', 'Status', 'DFI', 'Search Term', 'Error'])
-            df = df.append(results)
+        # Lets give it 2 tries if it fails.
+        for _ in range(2):
+            df, was_successful = try_scrape(search_term, scraper, name, df)
+            if was_successful:
+                break
+            else:
+                continue
+
+
+        # try:
+        #     df = df.append(scraper(search_term))
+        # except Exception as e:
+        #     logger.exception("The scraper {name} failed on the search {term}"
+        #                      .format(name=name, term=search_term))
+        #     failed_data = [['', '', '', name, search_term, str(e)]]
+        #     results = pd.DataFrame(failed_data, columns=['Project Name', 'URL', 'Status', 'DFI', 'Search Term', 'Error'])
+        #     df = df.append(results)
 
     df['Search Term'] = search_term
     return df
