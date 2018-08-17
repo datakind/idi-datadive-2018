@@ -77,7 +77,7 @@ def execute_search(search_term, scraper_names):
             continue
 
         print('Scraping:', name)
-        # Lets give it 2 tries if it fails.
+        # Lets give it an extra try if it fails
         for _ in range(2):
             df, was_successful = try_scrape(search_term, scraper, name, df)
             if was_successful:
