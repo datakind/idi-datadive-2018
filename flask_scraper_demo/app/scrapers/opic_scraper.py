@@ -3,6 +3,7 @@ import numpy as np
 import time
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
+from .helpers import init_chrome_webdriver
 from selenium.webdriver.chrome.options import Options
 
 def scrape_opic(search_term):
@@ -11,7 +12,7 @@ def scrape_opic(search_term):
 class OpicScraper(object):
 
     def __init__(self):
-        pass
+        self.driver = init_chrome_webdriver(headless=True, download_dir=None)
 
     def scrape(self, search_term):
 
@@ -21,11 +22,12 @@ class OpicScraper(object):
         NameList = []
         urlList = []
 
-        options = Options()
-        options.add_argument('--headless')
-        options.add_argument("window-size=1200x600")
+        # options = Options()
+        # options.add_argument('--headless')
+        # options.add_argument("window-size=1200x600")
 
-        browser = webdriver.Chrome(options=options)
+        # browser = webdriver.Chrome(options=options)
+        browser = self.driver
         url = "https://www3.opic.gov/OPICProjects"
         browser.get(url)
         time.sleep(1 + np.random.randint(2,4))
