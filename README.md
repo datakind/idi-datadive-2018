@@ -14,8 +14,8 @@ To run the app using Docker:
 2. Follow the installation instructions ([Docker Install Docs](https://docs.docker.com/install/))
 3. Open Docker (double-click the icon after it's installed)
 4. Open your Terminal
-5. Run the app (container): `docker run -d -p 5000:5000 jimjshields/idi:latest`
-    * To get updates, first run `docker pull jimjshields/idi:latest`
+5. Run the app (container): `docker run -d -p 5000:5000 mikdowd/idi:latest`
+    * To get updates, first run `docker pull mikdowd/idi:latest`
     * To stop the service, get the *CONTAINER ID* by running: `docker ps`. Then stop it with `docker kill the_id`
 6. Navigate to http://localhost:5000/
 
